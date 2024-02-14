@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="test_oculus"
+config/name="UR3_VrSrc"
 run/main_scene="res://mainscene.tscn"
 config/features=PackedStringArray("4.2", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
