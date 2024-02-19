@@ -167,12 +167,12 @@ class EncodeArray : IEncoderDecoder // For uint[], int[], ulong[], double[]
 
 static class Constants
 {
-	//public const string ROBOT_IP = "192.168.0.102"; // Real Robot Wifi(UR3_wifi)
-	public const string ROBOT_IP = "192.168.56.101"; // URSim
+	public const string ROBOT_IP = "192.168.0.102"; // Real Robot Wifi(UR3_wifi)
+	//public const string ROBOT_IP = "192.168.56.101"; // URSim
 	public const int RTDE_PORT = 30004;
 	public const int RECIVE_FREQ = 72; // 14 ms(freq of the VR set), take care BLOCKING(See procces monitor)
 	public const double ROTY_OFFSET = -1.57;
-	public const double POSZ_OFFSET = -0.6;
+	public const double POSZ_OFFSET = -1.0;
 	
 }
 
@@ -222,18 +222,21 @@ public class UniversalRobot_Inputs
 	public double input_double_register_3; 
 	public double input_double_register_4; 
 	public double input_double_register_5; 
-	public int input_int_register_25; 
+	public int input_int_register_25;
+	public int input_int_register_26; 
 }
 
 public partial class urbot : Node3D 
 {
 	Node3D hand;
+	XRController3D right_controller;
 	static UniversalRobot_Outputs UrOutputs=new UniversalRobot_Outputs();
 	static UniversalRobot_Inputs UrInputs=new UniversalRobot_Inputs();
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		 hand = GetNodeOrNull<Node3D>("/root/Node3D/XROrigin3D/RightHand");
+		hand = GetNodeOrNull<Node3D>("/root/Node3D/XROrigin3D/RightHand");
+		right_controller = GetNodeOrNull<XRController3D>("/root/Node3D/XROrigin3D/RightHand");
 		
 		// Connection using the protocol version 2 (allows update frequency less or equal to 125 Hz)
 		
@@ -283,9 +286,18 @@ public partial class urbot : Node3D
 		UrInputs.input_double_register_4 = robot_roty + Constants.ROTY_OFFSET;
 		UrInputs.input_double_register_5 = robot_rotz;
 		
-		// Send data to UR3
-		GD.Print("send inputs:" + Send_Ur_Inputs());
-		 
+		// Scan controller inputs
+		bool buttonA_pressed = (bool)right_controller.GetInput("ax_button");
+		bool buttonB_pressed = (bool)right_controller.GetInput("by_button");
+		float grip = (float)right_controller.GetInput("grip") * 100;
+		GD.Print("Controller: Grip force -> ", grip);
+		UrInputs.input_int_register_26 = (int)grip; // % gripper close
+		
+		// If button A pressed send data to UR3
+		if(buttonA_pressed){
+			GD.Print("Controller: Button A pressed");
+			GD.Print("send inputs:" + Send_Ur_Inputs());
+		}
 	}
 	
 	// Return the complete pose of the TCP (to be used in gd external scripts)
