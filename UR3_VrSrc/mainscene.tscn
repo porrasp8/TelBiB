@@ -1,8 +1,9 @@
-[gd_scene load_steps=27 format=3 uid="uid://dwqsm0tyoqd4d"]
+[gd_scene load_steps=29 format=3 uid="uid://dwqsm0tyoqd4d"]
 
 [ext_resource type="Script" path="res://mainscene.gd" id="1_txpd0"]
 [ext_resource type="PackedScene" uid="uid://b4kad2kuba1yn" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_hand_low.tscn" id="2_1w7ys"]
 [ext_resource type="Texture2D" uid="uid://bi7rmgpe073db" path="res://skybox2.jpg" id="2_05wwc"]
+[ext_resource type="Script" path="res://XRCamera3D.gd" id="2_x53ux"]
 [ext_resource type="PackedScene" uid="uid://cvnt2a4xb6i8l" path="res://project 18_lighting_dungeon.glb" id="3_4ivx8"]
 [ext_resource type="PackedScene" uid="uid://fiul51tsyoop" path="res://addons/godot-xr-tools/functions/function_teleport.tscn" id="3_l2l5c"]
 [ext_resource type="PackedScene" uid="uid://l2n30mpbkdyw" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/right_hand_low.tscn" id="4_0ywv8"]
@@ -13,6 +14,7 @@
 [ext_resource type="Script" path="res://TcpSphere.gd" id="11_amryy"]
 [ext_resource type="Script" path="res://RobotCamera.gd" id="13_xvf8n"]
 [ext_resource type="Texture2D" uid="uid://whmjneo41b38" path="res://captured_images/captured_image.jpg" id="14_nu0dh"]
+[ext_resource type="PackedScene" path="res://addons/godot-xr-tools/hands/model/scifi_desk.glb" id="15_b5h71"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_s2a22"]
 panorama = ExtResource("2_05wwc")
@@ -57,6 +59,17 @@ script = ExtResource("1_txpd0")
 
 [node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+script = ExtResource("2_x53ux")
+
+[node name="RobotCamera" type="Node3D" parent="XROrigin3D/XRCamera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -9)
+script = ExtResource("13_xvf8n")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="XROrigin3D/XRCamera3D/RobotCamera"]
+download_chunk_size = 195353
+
+[node name="RobotCameraWindow" type="Sprite3D" parent="XROrigin3D/XRCamera3D/RobotCamera"]
+texture = ExtResource("14_nu0dh")
 
 [node name="LeftHand" type="XRController3D" parent="XROrigin3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1, -0.5)
@@ -103,14 +116,15 @@ script = ExtResource("10_n8o0w")
 
 [node name="OriginBox" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+visible = false
 mesh = SubResource("BoxMesh_q123x")
 
 [node name="RobotSingArea" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.6, 0, 0, 0, 0.2, 0, 0, 0, 0.6, 0, 0.222431, 0)
+transform = Transform3D(0.4, 0, 0, 0, 0.2, 0, 0, 0, 0.4, 0, 0.222431, 0)
 mesh = SubResource("CylinderMesh_m877n")
 
 [node name="RobotMoveArea" type="MeshInstance3D" parent="."]
-transform = Transform3D(2, 0, 0, 0, 0.2, 0, 0, 0, 2, 0, 0.2, 0)
+transform = Transform3D(1.15, 0, 0, 0, 0.2, 0, 0, 0, 1.15, 0, 0.2, 0)
 mesh = SubResource("CylinderMesh_ckepv")
 surface_material_override/0 = SubResource("StandardMaterial3D_p0i4y")
 
@@ -130,17 +144,10 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 
 shape = SubResource("SphereShape3D_tr0nl")
 
 [node name="ReferenceBox" type="MeshInstance3D" parent="."]
-transform = Transform3D(4, 0, 0, 0, 12, 0, 0, 0, 4, 0.006, 1, -5.461)
+transform = Transform3D(4, 0, 0, 0, 12, 0, 0, 0, 4, 0.006, 1, -10.2565)
 mesh = SubResource("BoxMesh_q123x")
 skeleton = NodePath("../OriginBox")
 surface_material_override/0 = SubResource("StandardMaterial3D_i617n")
 
-[node name="RobotCamera" type="Node3D" parent="."]
-script = ExtResource("13_xvf8n")
-
-[node name="HTTPRequest" type="HTTPRequest" parent="RobotCamera"]
-download_chunk_size = 195353
-
-[node name="RobotCameraWindow" type="Sprite3D" parent="RobotCamera"]
-transform = Transform3D(0.815128, 0, 0.579281, 0, 1, 0, -0.579281, 0, 0.815128, -2.55254, 1.85143, -2.98186)
-texture = ExtResource("14_nu0dh")
+[node name="Sketchfab_Scene3" parent="." instance=ExtResource("15_b5h71")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.5, 2.01925, 2.555)

@@ -2,20 +2,22 @@ extends Node3D
 
 #-- Global vars
 var http_request : HTTPRequest
+var XRCamera : XRCamera3D  #-- To know headset position(Finally not used)
+var default_posy_window : float
 
 #-- Constants
 const  CAMARA_URL = "http://192.168.0.193:8080/shot.jpg"
 const  IMAGE_DIR = "res://captured_images/"
 const  REQUEST_INTERVAL = 0.01
-
-#-- Load urbot node to allow communication
-var urbot_script = load("res://urbot.cs")
-var urbot_node = urbot_script.new()
+const WINDOW_Y_SCALE_VAL = -6
 
 func _ready():
 	
+	default_posy_window = position[1]
+	
 	#-- HTTP request init
 	http_request = HTTPRequest.new()
+	XRCamera = XRCamera3D.new()
 	add_child(http_request)
 	
 	#-- Init callback and connect
@@ -25,6 +27,14 @@ func _ready():
 
 
 func _process(delta):
+	
+	#-- Update window position in function of headset position(inherits of XrCamera3D)
+	if(XRCamera.rotation[0] < 0):
+		position[1] = default_posy_window + XRCamera.rotation[0] * WINDOW_Y_SCALE_VAL
+	else:
+		position[1] = default_posy_window
+	#$RobotCameraWindow.position = Vector3(XRCamera.position[0], XRCamera.position[1], XRCamera.position[2]-4)
+	#$RobotCameraWindow.rotation = Vector3(XRCamera.rotation[0], XRCamera.rotation[1], XRCamera.rotation[2])
 
 	#-- New request when previous finished
 	print("HTTP status: ", http_request.get_http_client_status())
@@ -36,11 +46,12 @@ func _process(delta):
 
 
 func _make_request():
-
+	
 	#-- Make a new http request and check error
 	var http_error = http_request.request(CAMARA_URL)
 	if http_error != OK:
 		print("An error occurred in the HTTP request.")
+		
 
 func _http_request_completed(result, response_code, headers, body):
 
