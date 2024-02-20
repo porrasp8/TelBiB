@@ -167,8 +167,8 @@ class EncodeArray : IEncoderDecoder // For uint[], int[], ulong[], double[]
 
 static class Constants
 {
-	public const string ROBOT_IP = "192.168.0.102"; // Real Robot Wifi(UR3_wifi)
-	//public const string ROBOT_IP = "192.168.56.101"; // URSim
+	//public const string ROBOT_IP = "192.168.0.102"; // Real Robot Wifi(UR3_wifi)
+	public const string ROBOT_IP = "192.168.56.101"; // URSim
 	public const int RTDE_PORT = 30004;
 	public const int RECIVE_FREQ = 72; // 14 ms(freq of the VR set), take care BLOCKING(See procces monitor)
 	public const double ROTY_OFFSET = -1.57;
@@ -266,38 +266,51 @@ public partial class urbot : Node3D
 	{
 		//GD.Print("pos"+hand.GlobalPosition + " rot " + hand.GlobalRotation);
 		
-		// Robotx mapping(Axis Z in VR)
-		double robot_rotx = hand.GlobalRotation[2];
-		double robot_posx = hand.GlobalPosition[2];
-		
-		// Roboty mapping(Axis X in VR)
-		double robot_roty = hand.GlobalRotation[0];
-		double robot_posy = hand.GlobalPosition[0];
-		
-		// Robotz mapping(Axis Y in VR)
-		double robot_rotz = hand.GlobalRotation[1];
-		double robot_posz = hand.GlobalPosition[1]; 
-		
-		// Add offsets and assign to registers
-		UrInputs.input_double_register_0 = robot_posx;                
-		UrInputs.input_double_register_1 = robot_posy;
-		UrInputs.input_double_register_2 = robot_posz + Constants.POSZ_OFFSET;
-		UrInputs.input_double_register_3 = robot_rotx;
-		UrInputs.input_double_register_4 = robot_roty + Constants.ROTY_OFFSET;
-		UrInputs.input_double_register_5 = robot_rotz;
-		
 		// Scan controller inputs
 		bool buttonA_pressed = (bool)right_controller.GetInput("ax_button");
 		bool buttonB_pressed = (bool)right_controller.GetInput("by_button");
 		float grip = (float)right_controller.GetInput("grip") * 100;
+		
+		// Gripper % closed
 		GD.Print("Controller: Grip force -> ", grip);
 		UrInputs.input_int_register_26 = (int)grip; // % gripper close
 		
-		// If button A pressed send data to UR3
+		// New pose
 		if(buttonA_pressed){
-			GD.Print("Controller: Button A pressed");
-			GD.Print("send inputs:" + Send_Ur_Inputs());
+			GD.Print("Controller: Button A pressed -> Sending new pose");
+			
+			// Robotx mapping(Axis Z in VR)
+			double robot_rotx = hand.GlobalRotation[2];
+			double robot_posx = hand.GlobalPosition[2];
+			
+			// Roboty mapping(Axis X in VR)
+			double robot_roty = hand.GlobalRotation[0];
+			double robot_posy = hand.GlobalPosition[0];
+			
+			// Robotz mapping(Axis Y in VR)
+			double robot_rotz = hand.GlobalRotation[1];
+			double robot_posz = hand.GlobalPosition[1]; 
+			
+			// Add offsets and assign to registers
+			UrInputs.input_double_register_0 = robot_posx;                
+			UrInputs.input_double_register_1 = robot_posy;
+			UrInputs.input_double_register_2 = robot_posz + Constants.POSZ_OFFSET;
+			UrInputs.input_double_register_3 = robot_rotx;
+			UrInputs.input_double_register_4 = robot_roty + Constants.ROTY_OFFSET;
+			UrInputs.input_double_register_5 = robot_rotz;
 		}
+		// Same pose
+		else{
+			UrInputs.input_double_register_0 = UrOutputs.actual_TCP_pose[0];                
+			UrInputs.input_double_register_1 = UrOutputs.actual_TCP_pose[1];
+			UrInputs.input_double_register_2 = UrOutputs.actual_TCP_pose[2];
+			UrInputs.input_double_register_3 = UrOutputs.output_double_register_0;
+			UrInputs.input_double_register_4 = UrOutputs.output_double_register_1;
+			UrInputs.input_double_register_5 = UrOutputs.output_double_register_2;
+		}
+		
+		// Send data to UR3
+		GD.Print("send inputs:" + Send_Ur_Inputs());
 	}
 	
 	// Return the complete pose of the TCP (to be used in gd external scripts)
@@ -305,6 +318,13 @@ public partial class urbot : Node3D
 	{
 		return UrOutputs.actual_TCP_pose;
 	}
+	
+	// Return the complete pose of the TCP (to be used in gd external scripts)
+	 public double[] GetActualJoints()
+	{
+		return UrOutputs.actual_q;
+	}
+	
 	
 	// Return the rotation of TCP in RPY format(need to be implemented in the URscript)
 	 public double[] GetActualRPYRot()
