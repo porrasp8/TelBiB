@@ -8,7 +8,8 @@
 
 This repository contains a godot project that generates a virtual reality space (tested with an oculus quest 2) that communicates with a UR3 robotic arm using the RTDE library to perform teleoperation tasks.
 You can see useful information in the following pages:
-- [Interesting TFG](https://core.ac.uk/reader/154758810)
+- [Interesting VR TFG](https://core.ac.uk/reader/154758810)
+- [Interesting Predictive Paper](https://www.alaris.kz/wp-content/uploads/2013/11/lbr1899_Omarali.pdf)
 - [UR RTDE guide](https://www.universal-robots.com/download/manuals-e-seriesur20ur30/script/script-manual-e-series-sw-511/)
 - [URScript API Reference](https://s3-eu-west-1.amazonaws.com/ur-support-site/50689/scriptManual.pdf)
 
