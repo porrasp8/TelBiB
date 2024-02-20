@@ -3,6 +3,7 @@
 ## Index
 * [Introduction](#introduction)
 * [Features](#features)
+* [Newtowk communication](newtowk-communication)
 
 ### Introduction
 
@@ -14,16 +15,22 @@ You can see useful information in the following pages:
 - [URScript API Reference](https://s3-eu-west-1.amazonaws.com/ur-support-site/50689/scriptManual.pdf)
 
 ### Features:
-1. Uses a own network(UR3_wifi) to unify communication with the robot, sending orders from the computer connected to the VR headset and video streaming(Camera IP)
+1. Own network(UR3_wifi) to unify communication with the robot, sending orders from the computer connected to the VR headset and video streaming(Camera IP)
 2. RTDE protocol to communicate with UR3
-3. Camera Ip streaming visulized in the VR escene
-4. Some debug items in the VR environment
-
+3. Camera Ip streaming visulized in the VR escene(following user view)
+4. Some debug items in the VR environment(robot area, operation table, Tcp position..)
+5. Virtual safety boundaries in robot space
+6. 70Hz response(limited by headset refresh rate, robot allows 125)
+7. Gripper remote activation(Robotiq)
 
 
 ``` py
 
 ```
+
+
+### Newtowk communication
+
 
 
 
