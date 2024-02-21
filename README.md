@@ -4,6 +4,7 @@
 * [Introduction](#introduction)
 * [Features](#features)
 * [Newtowk communication](newtowk-communication)
+* [RTDE protocol](real-time-data-exchange(rtde)-protocol)
 
 ### Introduction
 
@@ -66,6 +67,85 @@ The system is composed for 3 main elements:
   </p>
    <p align="center"> Statics IPs</p>
 </div>
+
+
+> ¡TAKE CARE! The Eternet/IP option of the robot needs to be off. It communicates via LAN.
+
+### Real Time Data Exchange(RTDE) protocol
+
+The Real-Time Data Exchange (RTDE) interface provides a way to synchronize external applications with the UR controller over a standard TCP/IP connection, without breaking any real-time properties of the UR controller. This functionality is among others useful for interacting with fieldbus drivers (e.g. Ethernet/IP), manipulating robot I/O and plotting robot status (e.g. robot trajectories). The RTDE interface is by default available when the UR controller is running.
+
+RTDE will be the way in which the information extracted from the VR headset will be transmitted over the network to the robot. In this case and for unify the project we will use **a C# implementation for this library that can be used with Godot game engine**. These is so useful to allow VR escene an robot fast communication. [C# project for Godot and VR](https://sourceforge.net/p/firsttestfchaxel/code/HEAD/tree/trunk/Ur_Rtde/).
+
+You can see more information about it in the following links:
+- [RTDE client library github repo](https://github.com/UniversalRobots/RTDE_Python_Client_Library)
+- [UR RTDE guide](https://www.universal-robots.com/download/manuals-e-seriesur20ur30/script/script-manual-e-series-sw-511/)
+
+
+### Camera IP
+
+While the robot is being teleoperated, it will be necessary for the VR scene to show some type of information about its real situation, either through a two-dimensional image or a cloud of points. Initially we decided to place an IP camera that transmits real-time streaming over the network that we have previously configured, allowing it to be read by the main computer and the recreation of this image in the virtual scene.
+
+
+///////////////////////////////
+
+Para poder visualizar esta imagen en el entorno virtual necesitaremos crear dos nuevos elementos en la escena 3D del proyetco:
+- Un modulo HTTP Requets: para poder hacer la solicitud de imagenes a la camara Ip a traves de la red. Usaremos la URL previamente definida.
+- Un modulo Sprite3D: Actua como pantalla donde se proyectará la imagen obtenida en cada instante.
+
+Es importante que estos modulos sean hijos del modulo camara para permitir que la pantalla se vaya rotando cuando el usuario gire la cabeza y asi pueda seguir la situación del robot en cualquier instante. Además es recomendable definir una función que limite el traspaso del suelo por parte de esta pantalla para evitar que se solape con el y no se pueda visualizar.
+
+  <div class="figure">
+  <p align="center">
+    <img
+      src="https://github.com/porrasp8/UR3_VrTeleop/assets/72991722/4092003b-155f-424f-a195-1c40ac83bb98"
+      alt="RobotCamera Window Tree" />
+  </p>
+   <p align="center"> RobotCamera Window Tree</p>
+</div>
+
+
+Para poder realizar las solicitiudes HTTP y manetener la camara de la forma indicada añadiremos un godot script(gd) al modulo "RobotCamera"(RobotCamera.gd). Necesitaremos que este script se comunique con otros dos modulos, el HTTP para permitirle hacer las solicitudes y el camara para conocer la posición del headset. 
+
+A continuacion puedes ver un snippet con las llamadas más importantes realizadas por HTTP:
+
+``` gd
+#-- Init callback and connect
+http_request.request_completed.connect(self._http_request_completed)
+
+#-- Make a new http request and check error
+var http_error = http_request.request(CAMARA_URL)
+if http_error != OK:
+  print("An error occurred in the HTTP request.")
+
+#-- Callback and texture change
+func _http_request_completed(result, response_code, headers, body):
+
+	if response_code == 200:
+		#-- Load new image
+		var image = Image.new()
+		var image_error = image.load_jpg_from_buffer(body)
+		if image_error != OK:
+			print("An error occurred while trying to display the image.")
+		
+		#-- Transform image to texture and assign to the 3D
+		$RobotCameraWindow.texture = ImageTexture.create_from_image(image)
+		print("HTTP: texture changed")
+```
+
+
+Para reforzar el solapamiento de la pantalla usamos las siguientes llamadas:
+``` gd
+#-- Called every delta
+func _process(delta):	
+	#-- Update window position in function of headset position(inherits of XrCamera3D)
+	if(XRCamera.rotation[0] < 0):
+		position[1] = default_posy_window + XRCamera.rotation[0] * WINDOW_Y_SCALE_VAL
+	else:
+		position[1] = default_posy_window
+```
+
+Como este script esta asociado al nodo "Robot Camara" la variable "position" que se esta modificadno se refeiere a la posición de este propio nodo. Para comprobar las varianles que puedes modificar de un determinado tipo de nodo puedes acceder a la API de Godot y buscar el tipo de clase y de que otras clases hereda para saber por que valores esta formado, por ejemplo en este caso podriamos consultar [Aqui](https://docs.godotengine.org/en/stable/classes/class_node3d.html).
 
 
 
