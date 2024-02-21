@@ -31,6 +31,7 @@ You can see useful information in the following pages:
 
 ### Newtowk communication
 
+To allow the remote communication we configurte a robot dedicated router. A esta red se conectaran los siguientes elementos de nuestro sistema:
 
 
 
