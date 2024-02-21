@@ -31,7 +31,22 @@ You can see useful information in the following pages:
 
 ### Newtowk communication
 
-To allow the remote communication we configurte a robot dedicated router. A esta red se conectaran los siguientes elementos de nuestro sistema:
+To allow the remote communication we configurte a robot dedicated router. The name of the network is "UR3_wifi" and use the default password, we also configure statics IPs for each system component to simplify te procces in future connections.
+
+<div class="figure">
+  <p align="center">
+    <img
+      src="https://github.com/porrasp8/UR3_VrTeleop/assets/72991722/004cf20e-048f-41d9-810c-d5a9855c5e7c"
+      alt="Router"
+      width="500" 
+      height="250" />
+  </p>
+   <p align="center"> Router</p>
+</div>
+
+
+The system is composed for 3 main elements:
+- Robotics Arm(UR3 from Universal Robots)
 
 
 
