@@ -148,5 +148,18 @@ func _process(delta):
 Como este script esta asociado al nodo "Robot Camara" la variable "position" que se esta modificadno se refeiere a la posición de este propio nodo. Para comprobar las varianles que puedes modificar de un determinado tipo de nodo puedes acceder a la API de Godot y buscar el tipo de clase y de que otras clases hereda para saber por que valores esta formado, por ejemplo en este caso podriamos consultar [Aqui](https://docs.godotengine.org/en/stable/classes/class_node3d.html).
 
 
+Ejemplo del funcionamiento:
+
+  <div class="figure">
+  <p align="center">
+    <img
+      src="https://github.com/porrasp8/UR3_VrTeleop/assets/72991722/e34e9132-f97b-46ec-b8da-371f1250f331"
+      alt="Working Example" 
+	width="750" 
+      height="500"/>
+  </p>
+   <p align="center"> Working Example</p>
+</div>
+
 
 
