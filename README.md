@@ -44,9 +44,17 @@ To allow the remote communication we configurte a robot dedicated router. The na
    <p align="center"> Router</p>
 </div>
 
+<div class="figure">
+  <p align="center">
+    <img
+      src="https://github.com/porrasp8/UR3_VrTeleop/assets/72991722/c9afc9a2-2f4f-4384-83aa-15c876683da6"
+      alt="Wifi" />
+  </p>
+   <p align="center"> Wifi</p>
+</div>
 
 The system is composed for 3 main elements:
-- Robotics Arm(UR3 from Universal Robots)
+- Robotics Arm(UR3 from Universal Robots): Connected directly via Ethernet, IP -> 
 
 
 
