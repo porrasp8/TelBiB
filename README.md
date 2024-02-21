@@ -54,7 +54,18 @@ To allow the remote communication we configurte a robot dedicated router. The na
 </div>
 
 The system is composed for 3 main elements:
-- Robotics Arm(UR3 from Universal Robots): Connected directly via Ethernet, IP -> 
+- Robotics Arm(UR3 from Universal Robots): Connected directly via Ethernet, IP -> 192.168.0.102
+- Camera IP(a mobile phone provisionally): Via wifi real time image streaming, IP->	192.168.0.193, Port -> 8080, URL -> http://192.168.0.193:8080/shot.jpg
+- Computer proccesing VR Scene: Via wifi and USB3 cable with headseet, IP-> 192.168.0.100
+
+  <div class="figure">
+  <p align="center">
+    <img
+      src="https://github.com/porrasp8/UR3_VrTeleop/assets/72991722/1863d413-8a7a-4ba2-9248-3ba07c7f26c5"
+      alt="Statics IPs" />
+  </p>
+   <p align="center"> Statics IPs</p>
+</div>
 
 
 
