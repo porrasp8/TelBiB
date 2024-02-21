@@ -3,8 +3,10 @@
 ## Index
 * [Introduction](#introduction)
 * [Features](#features)
+* [Working Schema](#working-schema)
 * [Newtowk communication](newtowk-communication)
 * [RTDE protocol](real-time-data-exchange(rtde)-protocol)
+* [IP Camera](ip-camera)
 
 ### Introduction
 
@@ -18,16 +20,18 @@ You can see useful information in the following pages:
 ### Features:
 1. Own network(UR3_wifi) to unify communication with the robot, sending orders from the computer connected to the VR headset and video streaming(Camera IP)
 2. RTDE protocol to communicate with UR3
-3. Camera Ip streaming visulized in the VR escene(following user view)
+3. IP Camera streaming visulized in the VR escene(following user view)
 4. Some debug items in the VR environment(robot area, operation table, Tcp position..)
 5. Virtual safety boundaries in robot space
 6. 70Hz response(limited by headset refresh rate, robot allows 125)
 7. Gripper remote activation(Robotiq)
+8. A 3D Virtual Robot model communicated with real robot
 
 
-``` py
+### Working Schema
 
-```
+
+
 
 
 ### Newtowk communication
@@ -82,7 +86,7 @@ You can see more information about it in the following links:
 - [UR RTDE guide](https://www.universal-robots.com/download/manuals-e-seriesur20ur30/script/script-manual-e-series-sw-511/)
 
 
-### Camera IP
+### IP Camera
 
 While the robot is being teleoperated, it will be necessary for the VR scene to show some type of information about its real situation, either through a two-dimensional image or a cloud of points. Initially we decided to place an IP camera that transmits real-time streaming over the network that we have previously configured, allowing it to be read by the main computer and the recreation of this image in the virtual scene.
 
@@ -161,5 +165,7 @@ Ejemplo del funcionamiento:
    <p align="center"> Working Example</p>
 </div>
 
+
+### VR Environment
 
 
