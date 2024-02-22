@@ -267,7 +267,7 @@ Para conseguir esto podemos instalar en el sistema Ubuntu en el que corre el Fle
 Para instalar este paquete solo necesitaremos introducir [estos scripts](https://global.discourse-cdn.com/business7/uploads/universal_robots/original/1X/0c55e5facb16de1c931a61138e9608f2b4a4b031.zip) en una unidad USB y conectarlo al Flex Pendant. Esto lanzará un script de instalacion al igual que en el caso de usar "magic files" que nos indicara a traves de un mensaje en verde en la pantalla que la instalación se ha realizado de manera correcta. Para mas información acerca de este herramienta puedes consultar [la siguiente entrada](https://forum.universal-robots.com/t/remote-desktop-to-the-controller-ui/3826/22) en el foro oficial de Universal Robots.
 
 
-
+Una vez el servicio esta correctamente instalado 
 
 
 
