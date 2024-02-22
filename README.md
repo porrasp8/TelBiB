@@ -93,11 +93,12 @@ While the robot is being teleoperated, it will be necessary for the VR scene to 
 
 ///////////////////////////////
 
-Para poder visualizar esta imagen en el entorno virtual necesitaremos crear dos nuevos elementos en la escena 3D del proyetco:
-- Un modulo HTTP Requets: para poder hacer la solicitud de imagenes a la camara Ip a traves de la red. Usaremos la URL previamente definida.
-- Un modulo Sprite3D: Actua como pantalla donde se proyectará la imagen obtenida en cada instante.
+In order to view this image in the virtual environment we will need to create two new elements in the 3D scene of the project:
 
-Es importante que estos modulos sean hijos del modulo camara para permitir que la pantalla se vaya rotando cuando el usuario gire la cabeza y asi pueda seguir la situación del robot en cualquier instante. Además es recomendable definir una función que limite el traspaso del suelo por parte de esta pantalla para evitar que se solape con el y no se pueda visualizar.
+- An HTTP Requets module: to be able to request images from the IP camera through the network. We will use the previously defined URL.
+- A Sprite3D module: Acts as a screen where the image obtained at each moment will be projected.
+It is important that these modules are children of the camera module to allow the screen to rotate when the user turns their head and thus can follow the situation of the robot at any time. Furthermore, it is advisable to define a function that limits the transfer of the floor by this screen to prevent it from overlapping with it and not being able to be viewed.
+
 
   <div class="figure">
   <p align="center">
@@ -109,9 +110,9 @@ Es importante que estos modulos sean hijos del modulo camara para permitir que l
 </div>
 
 
-Para poder realizar las solicitiudes HTTP y manetener la camara de la forma indicada añadiremos un godot script(gd) al modulo "RobotCamera"(RobotCamera.gd). Necesitaremos que este script se comunique con otros dos modulos, el HTTP para permitirle hacer las solicitudes y el camara para conocer la posición del headset. 
+In order to make HTTP requests and maintain the camera as indicated, we will add a godot script (gd) to the "RobotCamera" module (RobotCamera.gd). We will need this script to communicate with two other modules, the HTTP to allow it to make requests and the camera to know the position of the headset.
 
-A continuacion puedes ver un snippet con las llamadas más importantes realizadas por HTTP:
+Below you can see a snippet with the most important calls made by HTTP:
 
 ``` gd
 #-- Init callback and connect
@@ -138,7 +139,7 @@ func _http_request_completed(result, response_code, headers, body):
 ```
 
 
-Para reforzar el solapamiento de la pantalla usamos las siguientes llamadas:
+To reduce the screen overlap we use the following calls:
 ``` gd
 #-- Called every delta
 func _process(delta):	
@@ -149,10 +150,10 @@ func _process(delta):
 		position[1] = default_posy_window
 ```
 
-Como este script esta asociado al nodo "Robot Camara" la variable "position" que se esta modificadno se refeiere a la posición de este propio nodo. Para comprobar las varianles que puedes modificar de un determinado tipo de nodo puedes acceder a la API de Godot y buscar el tipo de clase y de que otras clases hereda para saber por que valores esta formado, por ejemplo en este caso podriamos consultar [Aqui](https://docs.godotengine.org/en/stable/classes/class_node3d.html).
+As this script is associated with the "Robot Camera" node, the "position" variable that is being modified does not refer to the position of this node itself. To check the variables that you can modify for a certain type of node, you can access the Godot API and search for the type of class and what other classes it inherits from to know what values ​​it is made of, for example in this case we could consult [Here](https://docs.godotengine.org/en/stable/classes/class_node3d.html).
 
 
-Ejemplo del funcionamiento:
+Operation test:
 
   <div class="figure">
   <p align="center">
