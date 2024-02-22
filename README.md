@@ -205,3 +205,52 @@ Además de todos los elementos vistos en el apartado [IP Camera](ip-camera) el e
    <p align="center"> Simualted Robot Tcp</p>
 </div>
 
+
+- Pantalla con imagen de camara IP: Ya mencionado en apartado [IP Camera](ip-camera):
+
+
+<div class="figure">
+  <p align="center">
+    <img
+      src="https://github.com/porrasp8/UR3_VrTeleop/assets/72991722/159032d1-b9af-462b-81c7-5791756ae3a3"
+      alt="IP Camara Window" 
+	width="750" 
+      height="500"/>
+  </p>
+   <p align="center"> IP Camara Window</p>
+</div>
+
+
+- Mesa de operaciones: Utilizada para simular la configuración del UR3 de Mesena:
+
+<div class="figure">
+  <p align="center">
+    <img
+      src="https://github.com/porrasp8/UR3_VrTeleop/assets/72991722/4fe78c1b-b487-415c-a685-a5c5062dcb20"
+      alt="Operations Table" 
+	width="750" 
+      height="500"/>
+  </p>
+   <p align="center"> Operations Table</p>
+</div>
+
+
+- Escena completa:
+
+<div class="figure">
+  <p align="center">
+    <img
+      src="https://github.com/porrasp8/UR3_VrTeleop/assets/72991722/c5d45ebf-1479-4fdd-8fb7-10bd15363550"
+      alt="Complete VR Scene" 
+	width="750" 
+      height="500"/>
+  </p>
+   <p align="center"> Complete VR Scene</p>
+</div>
+
+
+
+
+
+
+
