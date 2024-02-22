@@ -168,14 +168,40 @@ Operation test:
 
 ### VR Environment
 
-Además de todos los elementos vistos en el apartado [IP Camera](ip-camera) el entorno de realidad virtual contiene varios nodos pensandos para ayudar al usuario a llevar a cabo la operación. 
+Además de todos los elementos vistos en el apartado [IP Camera](ip-camera) el entorno de realidad virtual contiene varios nodos pensandos para ayudar al usuario a llevar a cabo la operación:
+
+- Area de trabajo(fuera de las singularidades del brazo):
+
+<div class="figure">
+  <p align="center">
+    <img
+      src="https://github.com/porrasp8/UR3_VrTeleop/assets/72991722/63df4320-dc79-4cbf-88da-1c60af005b97"
+      alt="Work area" />
+  </p>
+   <p align="center"> Work area</p>
+</div>
 
 
+- Modelo 3D del brazo robotico: Conectado con el robot real. Se reciben las posiciones de los "joints" del robot real y se mueve el robot en la simulacion utilizando un godot script. La textura de este se ha configurado con trasparencia para no interferir en la visualización de la camara:
+
+<div class="figure">
+  <p align="center">
+    <img
+      src="https://github.com/porrasp8/UR3_VrTeleop/assets/72991722/5003392b-0742-44b4-ae4f-fb24cc936de0"
+      alt="UR3 VR 3D Model" />
+  </p>
+   <p align="center"> UR3 VR 3D Model</p>
+</div>
 
 
+- Elemento terminal del robot en forma de cono. Este esta pensando para configurar correctamentre las rotaciones entre el TCP real y el del entorno virtual. La rotación de este pasa por un proeceso de transformaciones que nos permite comprobar que el sistema este funcionando correctamente. La rotación del mando se envia al robot con formato "RPY"(Roll Pitch Yaw), que es el sistema de rotaciones estandar usado por godot, el robot recibe estos valores y los transforma en "Vector de Rotación"(formato usado por el UR3) a traves de la función **rpy2rotvec()** de URscript. A continuación el robot realizara la transformación inversa para tartar de recibir los valores iniciales de nuevo y lo alamacena en un registro para que pueda ser leido por el ordenador y posicionar el elemento terminal:
 
-
-
-
-
+<div class="figure">
+  <p align="center">
+    <img
+      src="https://github.com/porrasp8/UR3_VrTeleop/assets/72991722/ab94111c-2399-480f-a686-2f02dedd8aec"
+      alt="Simualted Robot Tcp" />
+  </p>
+   <p align="center"> Simualted Robot Tcp</p>
+</div>
 
