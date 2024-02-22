@@ -90,9 +90,6 @@ You can see more information about it in the following links:
 
 While the robot is being teleoperated, it will be necessary for the VR scene to show some type of information about its real situation, either through a two-dimensional image or a cloud of points. Initially we decided to place an IP camera that transmits real-time streaming over the network that we have previously configured, allowing it to be read by the main computer and the recreation of this image in the virtual scene.
 
-
-///////////////////////////////
-
 In order to view this image in the virtual environment we will need to create two new elements in the 3D scene of the project:
 
 - An HTTP Requets module: to be able to request images from the IP camera through the network. We will use the previously defined URL.
@@ -167,6 +164,18 @@ Operation test:
 </div>
 
 
+///////////////////////////////
+
 ### VR Environment
+
+Además de todos los elementos vistos en el apartado [IP Camera](ip-camera) el entorno de realidad virtual contiene varios nodos pensandos para ayudar al usuario a llevar a cabo la operación. 
+
+
+
+
+
+
+
+
 
 
