@@ -7,6 +7,9 @@
 * [Newtowk communication](newtowk-communication)
 * [RTDE protocol](real-time-data-exchange(rtde)-protocol)
 * [IP Camera](ip-camera)
+* [VR Environment](#vr-environment)
+* [Helpfull Tools](#helpfull-tools)
+	* [Flex Pendant VNC Remote Control](#flex-pendant-vnc-remote-control) 
 
 ### Introduction
 
@@ -26,6 +29,8 @@ You can see useful information in the following pages:
 6. 70Hz response(limited by headset refresh rate, robot allows 125)
 7. Gripper remote activation(Robotiq)
 8. A 3D Virtual Robot model communicated with real robot
+9. Return home position remote activation and autonomus movement(For difficult joints situations)
+10. Remote Flex Pendant control(VNC)
 
 
 ### Working Schema
@@ -247,6 +252,28 @@ Además de todos los elementos vistos en el apartado [IP Camera](ip-camera) el e
   </p>
    <p align="center"> Complete VR Scene</p>
 </div>
+
+
+### Helpfull Tools
+
+Tanto para el desarollo como para el posterior control de operación existen multiples herramientas que resultan de utilidad como por ejemplo el control VNC:
+
+#### Flex Pendant VNC Remote Control
+
+El Flex Pendant es un elemento crucial del robot ya que cualquier información, movimiento o configuración que llegue al robot pasa por el. Al estar trabajando con una plataforma que funciona en remoto a traves de la red nos interesa poder por ejemeplo lanzar el programa que se debe ejecutar en el robot a distancia y no necesitar ir hasta el robot para poder realizar esto o poder reiniciar el programa en caso de algun fallo en ejecucción, ademas de realización de cambios en el codigo y en la configuración basica del robot.
+
+Para conseguir esto podemos instalar en el sistema Ubuntu en el que corre el Flex Pendant un servicio que genere un servidor VNC que acepte conexiones remotas en la misma red y permita tanto la visualización de información, como la actuación.
+
+Para instalar este paquete solo necesitaremos introducir [estos scripts](https://global.discourse-cdn.com/business7/uploads/universal_robots/original/1X/0c55e5facb16de1c931a61138e9608f2b4a4b031.zip) en una unidad USB y conectarlo al Flex Pendant. Esto lanzará un script de instalacion al igual que en el caso de usar "magic files" que nos indicara a traves de un mensaje en verde en la pantalla que la instalación se ha realizado de manera correcta. Para mas información acerca de este herramienta puedes consultar [la siguiente entrada](https://forum.universal-robots.com/t/remote-desktop-to-the-controller-ui/3826/22) en el foro oficial de Universal Robots.
+
+
+
+
+
+
+
+
+
 
 
 
