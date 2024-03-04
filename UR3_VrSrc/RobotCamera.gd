@@ -33,8 +33,6 @@ func _process(delta):
 		position[1] = default_posy_window + XRCamera.rotation[0] * WINDOW_Y_SCALE_VAL
 	else:
 		position[1] = default_posy_window
-	#$RobotCameraWindow.position = Vector3(XRCamera.position[0], XRCamera.position[1], XRCamera.position[2]-4)
-	#$RobotCameraWindow.rotation = Vector3(XRCamera.rotation[0], XRCamera.rotation[1], XRCamera.rotation[2])
 
 	#-- New request when previous finished
 	print("HTTP status: ", http_request.get_http_client_status())

@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://dwqsm0tyoqd4d"]
+[gd_scene load_steps=57 format=3 uid="uid://dwqsm0tyoqd4d"]
 
 [ext_resource type="Script" path="res://mainscene.gd" id="1_txpd0"]
 [ext_resource type="PackedScene" uid="uid://b4kad2kuba1yn" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_hand_low.tscn" id="2_1w7ys"]
@@ -16,6 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://whmjneo41b38" path="res://captured_images/captured_image.jpg" id="14_nu0dh"]
 [ext_resource type="PackedScene" uid="uid://bafofiordrrws" path="res://addons/godot-xr-tools/hands/model/scifi_desk.glb" id="15_b5h71"]
 [ext_resource type="Script" path="res://UR3AnimatedModel.gd" id="16_ofayf"]
+[ext_resource type="ArrayMesh" uid="uid://bajutcjom43ee" path="res://addons/godot-xr-tools/hands/2F85_gripper.obj" id="17_k870g"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_s2a22"]
 panorama = ExtResource("2_05wwc")
@@ -55,6 +56,8 @@ albedo_color = Color(0.0509804, 0.0509804, 0.0509804, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x5e0b"]
 resource_name = "rep_WhitePlastic"
+transparency = 1
+blend_mode = 3
 cull_mode = 2
 albedo_color = Color(0.94639, 0.94639, 0.94639, 1)
 metallic = 0.132
@@ -62,6 +65,8 @@ roughness = 0.25
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d65x0"]
 resource_name = "rep_BluePlastic"
+transparency = 1
+blend_mode = 3
 cull_mode = 2
 albedo_color = Color(0.395013, 0.790709, 0.979004, 1)
 metallic = 0.2
@@ -125,6 +130,8 @@ shadow_mesh = SubResource("ArrayMesh_7ybud")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2fi6m"]
 resource_name = "rep_Chrome"
+transparency = 1
+blend_mode = 3
 cull_mode = 2
 metallic = 1.0
 roughness = 0.091875
@@ -270,6 +277,8 @@ shadow_mesh = SubResource("ArrayMesh_twtu1")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o4vlu"]
 resource_name = "rep_ArmLogo"
+transparency = 1
+blend_mode = 3
 cull_mode = 2
 metallic = 0.2
 roughness = 0.1
@@ -876,6 +885,14 @@ _data = {
 "UR3Track": SubResource("Animation_71pi1")
 }
 
+[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_2isos"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.270588)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wtmjf"]
+lightmap_size_hint = Vector2i(14, 21)
+material = SubResource("ORMMaterial3D_2isos")
+
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_txpd0")
 
@@ -902,6 +919,7 @@ tracker = &"left_hand"
 [node name="LeftHand" parent="XROrigin3D/LeftHand" instance=ExtResource("2_1w7ys")]
 
 [node name="FunctionTeleport" parent="XROrigin3D/LeftHand" instance=ExtResource("3_l2l5c")]
+visible = false
 
 [node name="RightHand" type="XRController3D" parent="XROrigin3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, -0.5)
@@ -939,21 +957,23 @@ shape = SubResource("BoxShape3D_of7y6")
 script = ExtResource("10_n8o0w")
 
 [node name="OriginBox" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+transform = Transform3D(0.1, 0, 1.74846e-07, 0, 15, 0, -1.74846e-08, 0, 1, 0, 0.6, 0)
 visible = false
 mesh = SubResource("BoxMesh_q123x")
 
 [node name="RobotSingArea" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.4, 0, 0, 0, 0.2, 0, 0, 0, 0.4, 0, 0.222431, 0)
+visible = false
 mesh = SubResource("CylinderMesh_m877n")
 
 [node name="RobotMoveArea" type="MeshInstance3D" parent="."]
 transform = Transform3D(1.15, 0, 0, 0, 0.2, 0, 0, 0, 1.15, 0, 0.2, 0)
+visible = false
 mesh = SubResource("CylinderMesh_ckepv")
 surface_material_override/0 = SubResource("StandardMaterial3D_p0i4y")
 
 [node name="RobotTcp" type="MeshInstance3D" parent="."]
-transform = Transform3D(-4.37114e-09, -0.05, -4.37114e-09, 0, -2.18557e-09, 0.1, -0.1, 2.18557e-09, 1.91069e-16, -0.433248, 2.28615, -0.498094)
+transform = Transform3D(0.0669131, 0, -0.0743145, 0, 0.05, 0, 0.0743145, 0, 0.0669131, -0.502098, 1.01467, 0.0509546)
 top_level = true
 mesh = SubResource("CylinderMesh_iydvg")
 skeleton = NodePath("")
@@ -964,7 +984,7 @@ script = ExtResource("11_amryy")
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RobotTcp/StaticBody3D"]
-transform = Transform3D(1, 0, 4.23516e-22, 4.23516e-22, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -0.504349, 0)
+transform = Transform3D(1, 0, 5.23869e-10, 2.32831e-10, -4.47471e-08, 1, 2.98023e-08, -1, -5.91681e-08, -5.96046e-08, -0.50435, 0)
 shape = SubResource("SphereShape3D_tr0nl")
 
 [node name="ReferenceBox" type="MeshInstance3D" parent="."]
@@ -974,10 +994,10 @@ skeleton = NodePath("../OriginBox")
 surface_material_override/0 = SubResource("StandardMaterial3D_i617n")
 
 [node name="Table" parent="." instance=ExtResource("15_b5h71")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.5, 2.01925, 2.555)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.5, 2.10929, 3.09102)
 
 [node name="UR3 animated" type="Node3D" parent="."]
-transform = Transform3D(-8.74228e-08, 0, 2, 0, 2, 0, -2, 0, -8.74228e-08, 0, 0.9, -0.5)
+transform = Transform3D(0.173648, 0, 0.984808, 0, 1, 0, -0.984808, 0, 0.173648, -0.017, 1, 0.078)
 script = ExtResource("16_ofayf")
 
 [node name="Yup2Zup" type="Node3D" parent="UR3 animated"]
@@ -995,12 +1015,12 @@ mesh = SubResource("ArrayMesh_yle63")
 skeleton = NodePath("")
 
 [node name="UR3" type="MeshInstance3D" parent="UR3 animated/Yup2Zup/UnityRobotics_RF3_s1"]
-transform = Transform3D(-0.985703, 0, 0.168489, 0, 1, 0, -0.168489, 0, -0.985703, 0, -8.60548, -0.000428877)
+transform = Transform3D(-0.984807, 0, 0.173648, 0, 1, 0, -0.173648, 0, -0.984807, 2.27374e-13, -8.60548, -0.000428877)
 mesh = SubResource("ArrayMesh_u6ph8")
 skeleton = NodePath("")
 
 [node name="Shoulder" type="MeshInstance3D" parent="UR3 animated/Yup2Zup/UnityRobotics_RF3_s1/UR3"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -6.58451, 6.43453)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.88217e-09, -6.58451, 6.43453)
 mesh = SubResource("ArrayMesh_nh5f1")
 skeleton = NodePath("")
 
@@ -1010,7 +1030,7 @@ mesh = SubResource("ArrayMesh_8c804")
 skeleton = NodePath("")
 
 [node name="Wrist01" type="MeshInstance3D" parent="UR3 animated/Yup2Zup/UnityRobotics_RF3_s1/UR3/Shoulder/Elbow"]
-transform = Transform3D(0.988228, 0, -0.152986, 0, 1, 0, 0.152986, 0, 0.988228, -0.00311661, -17.3377, -4.26253)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00311661, -17.3377, -4.26253)
 mesh = SubResource("ArrayMesh_ann6v")
 skeleton = NodePath("")
 
@@ -1029,6 +1049,11 @@ transform = Transform3D(0.939693, -0.34202, 0, 0.34202, 0.939693, 0, 0, 0, 1, 0,
 mesh = SubResource("ArrayMesh_trhyc")
 skeleton = NodePath("")
 
+[node name="2f85Gripper" type="MeshInstance3D" parent="UR3 animated/Yup2Zup/UnityRobotics_RF3_s1/UR3/Shoulder/Elbow/Wrist01/Wrist02/Wrist03/EffectorJoint"]
+transform = Transform3D(-0.0343437, 0.0026631, -0.0938799, -0.0938243, -0.00542566, 0.0341695, -0.00418364, 0.0998173, 0.00436201, 17.8508, -6.35759, 2.77679)
+mesh = ExtResource("17_k870g")
+skeleton = NodePath("../../../../../../../../../../..")
+
 [node name="current" type="Node3D" parent="UR3 animated"]
 transform = Transform3D(0.707107, 0.577382, 0.408204, 8.9407e-08, 0.577287, -0.816541, -0.707107, 0.577382, 0.408204, 1.08565, 1.13616, 1.11212)
 
@@ -1042,3 +1067,19 @@ transform = Transform3D(0.685921, 0.651558, 0.324014, 0, 0.445271, -0.895396, -0
 libraries = {
 "": SubResource("AnimationLibrary_t4hwc")
 }
+
+[node name="SafetyBoundary1" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.00999992, 0, 0.0161966, 0, 4, 0, -4.04915e-05, 0, 3.99997, 0.920295, 1.02067, 0)
+mesh = SubResource("BoxMesh_wtmjf")
+
+[node name="SafetyBoundary2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.00999992, 0, 0.0161966, 0, 4, 0, -4.04915e-05, 0, 3.99997, -0.81812, 1.02924, -0.0246196)
+mesh = SubResource("BoxMesh_wtmjf")
+
+[node name="SafetyBoundary3" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-10, 0, 4, 0, 4, 0, -0.01, 0, -1.74846e-07, -0.0160661, 1.02924, -0.391948)
+mesh = SubResource("BoxMesh_wtmjf")
+
+[node name="SafetyBoundary4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.91069e-17, 1.74846e-07, 4, 0.01, -1.74846e-07, 0, 4.37114e-10, 4, -1.74846e-07, 0.00107387, 1.03448, -0.47975)
+mesh = SubResource("BoxMesh_wtmjf")

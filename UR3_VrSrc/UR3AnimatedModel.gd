@@ -1,6 +1,5 @@
 extends Node3D
 
-
 #-- Constants
 const BASE_ROT_OFFSET = -3.14;
 const SHOULDER_ROT_OFFSET = 1.57;
