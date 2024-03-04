@@ -167,12 +167,13 @@ class EncodeArray : IEncoderDecoder // For uint[], int[], ulong[], double[]
 
 static class Constants
 {
-	//public const string ROBOT_IP = "192.168.0.102"; // Real Robot Wifi(UR3_wifi)
-	public const string ROBOT_IP = "192.168.56.101"; // URSim
+	public const string ROBOT_IP = "192.168.0.102"; // Real Robot Wifi(UR3_wifi)
+	//public const string ROBOT_IP = "192.168.56.101"; // URSim
 	public const int RTDE_PORT = 30004;
+	public const int DASHBOARD_PORT = 29999;
 	public const int RECIVE_FREQ = 72; // 14 ms(freq of the VR set), take care BLOCKING(See procces monitor)
 	public const double ROTY_OFFSET = -1.57;
-	public const double POSZ_OFFSET = -1.0;
+	public const double POSZ_OFFSET = -0.95;
 	
 }
 
@@ -256,7 +257,6 @@ public partial class urbot : Node3D
 		// Request the UR to send back Outputs periodically
 		Ur_ControlStart();
 
-
 		// Bye bye Robot
 		//Ur3.Disconnect(); 
 	}
@@ -269,6 +269,7 @@ public partial class urbot : Node3D
 		// Scan controller inputs
 		bool buttonA_pressed = (bool)right_controller.GetInput("ax_button");
 		bool buttonB_pressed = (bool)right_controller.GetInput("by_button");
+		bool trigger_click = (bool)right_controller.GetInput("trigger_click");
 		float grip = (float)right_controller.GetInput("grip") * 100;
 		
 		// Gripper % closed
@@ -295,9 +296,10 @@ public partial class urbot : Node3D
 			UrInputs.input_double_register_0 = robot_posx;                
 			UrInputs.input_double_register_1 = robot_posy;
 			UrInputs.input_double_register_2 = robot_posz + Constants.POSZ_OFFSET;
-			UrInputs.input_double_register_3 = robot_rotx;
+			UrInputs.input_double_register_3 = robot_rotx + 1.57;
 			UrInputs.input_double_register_4 = robot_roty + Constants.ROTY_OFFSET;
 			UrInputs.input_double_register_5 = robot_rotz;
+			UrInputs.input_int_register_25 = 1; // ServoJ mode
 		}
 		// Same pose
 		else{
@@ -307,6 +309,24 @@ public partial class urbot : Node3D
 			UrInputs.input_double_register_3 = UrOutputs.output_double_register_0;
 			UrInputs.input_double_register_4 = UrOutputs.output_double_register_1;
 			UrInputs.input_double_register_5 = UrOutputs.output_double_register_2;
+			
+			if(buttonB_pressed){
+				UrInputs.input_int_register_25 = 2;// MoveJ Mode(go to home)
+			}
+		}
+		
+		
+		// Dashboard communication
+		if(trigger_click){
+			GD.Print("Trigger clicked");
+			DashboardClient dashboardClient = new DashboardClient(Constants.ROBOT_IP, Constants.DASHBOARD_PORT);
+			dashboardClient.SendString("brake release\n");
+			dashboardClient.SendString("power on\n");
+			dashboardClient.SendString("unlock protective stop\n");
+			//dashboardClient.SendString("load rtde_servoj_loop.urp\n");
+			dashboardClient.SendString("vr rtde_servoj_loop.urp\n");
+			dashboardClient.SendString("play\n");
+			//UrInputs.input_int_register_25 = 2;// MoveJ Mode(go to home)
 		}
 		
 		// Send data to UR3
@@ -611,4 +631,43 @@ public partial class urbot : Node3D
 		this.UrStructInput = UrStruct;
 		return Setup_Ur_InputsOutputs(RTDE_Command.CONTROL_PACKAGE_SETUP_INPUTS, UrStruct, out UrStructInputDecoder);
 	}
+
+	// Dashboard connection
+	public class DashboardClient
+	{
+		private TcpClient client;
+
+		public DashboardClient(string robotIp, int dashboardPort)
+		{
+			client = new TcpClient(robotIp, dashboardPort);
+		}
+
+		public void SendString(string message)
+		{
+			if (client == null || !client.Connected)
+			{
+				Console.WriteLine("Not connected to the Dashboard server.");
+				return;
+			}
+
+			NetworkStream stream = client.GetStream();
+			byte[] data = Encoding.ASCII.GetBytes(message);
+			stream.Write(data, 0, data.Length);
+		}
+
+		public void Disconnect()
+		{
+			if (client != null && client.Connected)
+			{
+				client.Close();
+			}
+		}
+	}
 }
+
+
+
+
+
+
+
