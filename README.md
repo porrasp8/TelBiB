@@ -9,7 +9,8 @@
 * [IP Camera](ip-camera)
 * [VR Environment](#vr-environment)
 * [Helpfull Tools](#helpfull-tools)
-	* [Flex Pendant VNC Remote Control](#flex-pendant-vnc-remote-control) 
+	* [Flex Pendant VNC Remote Control](#flex-pendant-vnc-remote-control)
+*[TFG Index](#tfg-index) 
 
 ### Introduction
 
@@ -277,6 +278,56 @@ Una vez el servicio esta correctamente instalado este se lanzará directamente c
   </p>
    <p align="center"> VNC Flex Pendant View</p>
 </div>
+
+### TFG Index
+
+Indice Para desarrollo del TFG con descripciones generales:
+
+1. Introducción  
+  1.1. La robótica  
+  1.2. Los brazos roboticos y Cobots 
+  1.3. La Teleoperación  
+  1.4. La Realidad Virtual  
+  1.5. La comunicación inalambrica de alta velocidad(5G)  
+  1.6. Sistemas de tiempo real  
+
+2. Estado del Arte  
+
+3. Objetivos  
+   3.1. Descripción del problema  
+   3.2 Requisitos  
+   3.3 Metodología  
+   3.4 Plan de Trabajo  
+
+4. Plataformas de desarollo, herramientas y tecnologias utilizadas  
+   4.1. Lenguajes de programación  
+     	4.1.1. Python  
+     	4.1.2. C#(.NET)  
+     	4.1.3. GDScript??(Lenguaje de scrpting)  
+     	4.1.4. URScrip??  
+   4.2. Entornos de programacción
+	4.2.1. Godot Game Engine  
+       	4.2.2. URsim  
+       	4.3.3. RTDE Protocol  
+     	4.4.4  Oculus Developer??  
+     	4.4.5. Godot XR tools  
+     	4.4.6. ...
+   4.3. Hardware  
+   	4.3.1. Router Tp-Link Archer  
+  	4.3.2. Brazo robotico UR3
+	4.3.3. Flex Pendant CB3
+  	4.3.4. Oculus Quest 2
+
+-- Entonro real??
+   
+5. Entorno de comunicación
+   (Explicacion de uso de router y tecnologia de comunicacion de timepo real con RTDE para minimizar latencias y permitir movimiento fluido en teleoperación. Explicacion de pruebas iniciales con cable ethernet adoc y mando logitech. Uso de ServoJ, fucnionamineto y prubeas con el). Comunicacion final, sockets... Admeas de camara y esquema de todo el entorno.)
+
+6. Entorno Virtual
+   (Explicacion de cada uno de los elementos del entono virtual, su conexion con los elementos reales y las diferentes herramientas añadidas para permitir comunicacion y operaciones correctas)
+
+7. Conclusioones
+     
 
 
 
