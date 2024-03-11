@@ -305,17 +305,17 @@ Indice Para desarrollo del TFG con descripciones generales:
      	4.1.2. C#(.NET)  
      	4.1.3. GDScript??(Lenguaje de scrpting)  
      	4.1.4. URScrip??  
-   4.2. Entornos de programacción
+   4.2. Entornos de programacción  
 	4.2.1. Godot Game Engine  
        	4.2.2. URsim  
        	4.3.3. RTDE Protocol  
      	4.4.4  Oculus Developer??  
      	4.4.5. Godot XR tools  
-     	4.4.6. ...
+     	4.4.6. ...  
    4.3. Hardware  
    	4.3.1. Router Tp-Link Archer  
-  	4.3.2. Brazo robotico UR3
-	4.3.3. Flex Pendant CB3
+  	4.3.2. Brazo robotico UR3  
+	4.3.3. Flex Pendant CB3  
   	4.3.4. Oculus Quest 2  
 
 -- Entonro real??  
