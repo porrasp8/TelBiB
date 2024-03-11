@@ -316,9 +316,17 @@ Indice Para desarrollo del TFG con descripciones generales:
    	4.3.1. Router Tp-Link Archer  
   	4.3.2. Brazo robotico UR3
 	4.3.3. Flex Pendant CB3
-  	4.3.4. Oculus Quest 2
+  	4.3.4. Oculus Quest 2  
 
--- Entonro real??
+-- Entonro real??  
+
+5. Diseño  
+   5.1 Entorno real(UR3)  
+
+   5.2 Entorno virtual(Godot y VR)  
+
+   5.3. Entorno de comunicación(router y red)  
+
    
 5. Entorno de comunicación
    (Explicacion de uso de router y tecnologia de comunicacion de timepo real con RTDE para minimizar latencias y permitir movimiento fluido en teleoperación. Explicacion de pruebas iniciales con cable ethernet adoc y mando logitech. Uso de ServoJ, fucnionamineto y prubeas con el). Comunicacion final, sockets... Admeas de camara y esquema de todo el entorno.)
