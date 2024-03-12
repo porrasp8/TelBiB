@@ -287,19 +287,20 @@ Indice Para desarrollo del TFG con descripciones generales:
   1.1. La robótica  
   1.2. Los brazos roboticos y Cobots 
   1.3. La Teleoperación  
-  1.4. La Realidad Virtual  
+  1.4. La Realidad Virtual 
   1.5. La comunicación inalambrica de alta velocidad(5G)  
-  1.6. Sistemas de tiempo real  
+  1.6. Sistemas de tiempo real
+  1.7 Modelado 3D???  
 
-2. Estado del Arte  
+3. Estado del Arte  
 
-3. Objetivos  
+4. Objetivos  
    3.1. Descripción del problema  
    3.2 Requisitos  
    3.3 Metodología  
    3.4 Plan de Trabajo  
 
-4. Plataformas de desarollo, herramientas y tecnologias utilizadas  
+5. Plataformas de desarollo, herramientas y tecnologias utilizadas  
    4.1. Lenguajes de programación  
      	4.1.1. Python  
      	4.1.2. C#(.NET)  
