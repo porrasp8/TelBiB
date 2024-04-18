@@ -317,14 +317,18 @@ Indice Para desarrollo del TFG con descripciones generales:
    	4.3.1. Router Tp-Link Archer  
   	4.3.2. Brazo robotico UR3  
 	4.3.3. Flex Pendant CB3  
-  	4.3.4. Oculus Quest 2  
+  	4.3.4. Oculus Quest 2
+   	4.3.5. Robotiq Gripper  
 
 -- Entonro real??  
 
 5. Diseño  
-   5.1 Entorno real(UR3)  
+   5.1 Entorno real(UR3):
+   Hablar de como empece aprendiendo a controlar el UR, me familiaricé con el URscripting, los distintos modos del UR, Y las distintas funciones de movimineto explicando las diferencias existentes entre MoveJ, ServoJ... Y porque finalmente decidi utilizar servoJ. Comentar funcionamineto de servoJ y calculo de trayectorias con las funciones de Ur para conseguir el movimiento final, explicando las necesidades que me planteaba la toma de posicion de las VR.
+   Aunque previamnete explicar el aprendizazje de la comunicacion y creacion de scripts de python para probar esta con moviemientos basicos.
 
-   5.2 Entorno virtual(Godot y VR)  
+   5.2 Entorno virtual(Godot y VR):
+   Comenzar hablando de libreria de RTDE para  C# y eleccion de Godot como entorno de realidad virtual. Hablando del funcionamiento de toda la comunicación(sockets, tcp/udp), primeros nodos, calculo de posiciones y rotaciones, elementos del entorno y poco a poco intrdocusimos elementos como camara 2D, triangulo de TCP, mesa, limites visuales, modelo 3D, botones...
 
    5.3. Entorno de comunicación(router y red)  
 
