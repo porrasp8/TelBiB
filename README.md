@@ -285,11 +285,11 @@ Indice Para desarrollo del TFG con descripciones generales:
 
 1. Introducción  
   1.1. La robótica  
-  1.2. Los brazos roboticos y Cobots 
+  1.2. Los brazos roboticos y Cobots  
   1.3. La Teleoperación  
-  1.4. La Realidad Virtual 
-  1.5. La comunicación inalambrica de alta velocidad(5G)  
-  1.6. Sistemas de tiempo real
+  1.4. La Realidad Virtual  
+  1.5. La comunicación inalambrica de alta velocidad(5G)   
+  1.6. Sistemas de tiempo real  
   1.7 Modelado 3D???  
 
 3. Estado del Arte  
