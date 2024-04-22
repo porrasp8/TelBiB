@@ -317,7 +317,7 @@ Indice Para desarrollo del TFG con descripciones generales:
    	4.3.1. Router Tp-Link Archer  
   	4.3.2. Brazo robotico UR3  
 	4.3.3. Flex Pendant CB3  
-  	4.3.4. Oculus Quest 2
+  	4.3.4. Oculus Quest 2  
    	4.3.5. Robotiq Gripper  
 
 -- Entonro real??  
