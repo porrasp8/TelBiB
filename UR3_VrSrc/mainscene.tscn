@@ -2,21 +2,35 @@
 
 [ext_resource type="Script" path="res://mainscene.gd" id="1_txpd0"]
 [ext_resource type="PackedScene" uid="uid://b4kad2kuba1yn" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_hand_low.tscn" id="2_1w7ys"]
-[ext_resource type="Texture2D" uid="uid://bi7rmgpe073db" path="res://skybox2.jpg" id="2_05wwc"]
-[ext_resource type="Script" path="res://XRCamera3D.gd" id="2_x53ux"]
-[ext_resource type="PackedScene" uid="uid://cvnt2a4xb6i8l" path="res://project 18_lighting_dungeon.glb" id="3_4ivx8"]
+[ext_resource type="Texture2D" uid="uid://bi7rmgpe073db" path="res://WorldModels/skybox2.jpg" id="2_05wwc"]
+[ext_resource type="PackedScene" uid="uid://cvnt2a4xb6i8l" path="res://WorldModels/project 18_lighting_dungeon.glb" id="3_4ivx8"]
 [ext_resource type="PackedScene" uid="uid://fiul51tsyoop" path="res://addons/godot-xr-tools/functions/function_teleport.tscn" id="3_l2l5c"]
 [ext_resource type="PackedScene" uid="uid://l2n30mpbkdyw" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/right_hand_low.tscn" id="4_0ywv8"]
 [ext_resource type="PackedScene" uid="uid://bl2nuu3qhlb5k" path="res://addons/godot-xr-tools/functions/movement_direct.tscn" id="5_63es4"]
 [ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="6_ihxr0"]
 [ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="7_7i2q6"]
-[ext_resource type="Script" path="res://urbot.cs" id="10_n8o0w"]
-[ext_resource type="Script" path="res://TcpSphere.gd" id="11_amryy"]
-[ext_resource type="Script" path="res://RobotCamera.gd" id="13_xvf8n"]
+[ext_resource type="Script" path="res://UrControl/urbot.cs" id="10_n8o0w"]
+[ext_resource type="Script" path="res://UrVisualizing/TcpSphere.gd" id="11_amryy"]
+[ext_resource type="Script" path="res://UrVisualizing/RobotCamera.gd" id="13_xvf8n"]
 [ext_resource type="Texture2D" uid="uid://whmjneo41b38" path="res://captured_images/captured_image.jpg" id="14_nu0dh"]
 [ext_resource type="PackedScene" uid="uid://bafofiordrrws" path="res://addons/godot-xr-tools/hands/model/scifi_desk.glb" id="15_b5h71"]
-[ext_resource type="Script" path="res://UR3AnimatedModel.gd" id="16_ofayf"]
+[ext_resource type="Script" path="res://UrVisualizing/UR3AnimatedModel.gd" id="16_ofayf"]
 [ext_resource type="ArrayMesh" uid="uid://bajutcjom43ee" path="res://addons/godot-xr-tools/hands/2F85_gripper.obj" id="17_k870g"]
+
+[sub_resource type="GDScript" id="GDScript_h12oc"]
+script/source = "extends XRCamera3D
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+	#print(\"XRCamera position: \", position)
+"
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_s2a22"]
 panorama = ExtResource("2_05wwc")
@@ -858,6 +872,7 @@ shadow_mesh = SubResource("ArrayMesh_v8t0c")
 [sub_resource type="Animation" id="Animation_71pi1"]
 resource_name = "UR3Track"
 length = 16.6667
+loop_mode = 1
 tracks/0/type = "rotation_3d"
 tracks/0/imported = true
 tracks/0/enabled = true
@@ -900,7 +915,7 @@ script = ExtResource("1_txpd0")
 
 [node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
-script = ExtResource("2_x53ux")
+script = SubResource("GDScript_h12oc")
 
 [node name="RobotCamera" type="Node3D" parent="XROrigin3D/XRCamera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -9)
@@ -946,7 +961,7 @@ visible = false
 [node name="Floor" type="StaticBody3D" parent="."]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
-transform = Transform3D(40, 0, 0, 0, 40, 0, 0, 0, 40, 0, 0, 0)
+transform = Transform3D(40, 0, 0, 0, 40, 0, 0, 0, 40, -0.0763042, -0.0492339, 0.00433588)
 mesh = SubResource("PlaneMesh_dhe0s")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
@@ -1010,7 +1025,7 @@ transform = Transform3D(0.685921, 0.324014, -0.651558, -0.727676, 0.305421, -0.6
 transform = Transform3D(-0.290865, 0.771101, -0.566393, -0.955171, -0.199883, 0.218391, 0.055189, 0.604525, 0.794672, 4.07625, -1.00545, -5.90386)
 
 [node name="UnityRobotics_RF3_s1" type="MeshInstance3D" parent="UR3 animated/Yup2Zup"]
-transform = Transform3D(-0.01, -7.54979e-10, 7.54979e-10, 7.54979e-10, 5.36442e-09, 0.01, -7.54979e-10, 0.01, -4.76837e-09, 0, 0, 0)
+transform = Transform3D(-0.01, -7.54979e-10, 5.82077e-10, 5.82077e-10, 5.36442e-09, 0.01, -7.54979e-10, 0.01, -4.76837e-09, 0, 0, 0)
 mesh = SubResource("ArrayMesh_yle63")
 skeleton = NodePath("")
 
@@ -1020,12 +1035,12 @@ mesh = SubResource("ArrayMesh_u6ph8")
 skeleton = NodePath("")
 
 [node name="Shoulder" type="MeshInstance3D" parent="UR3 animated/Yup2Zup/UnityRobotics_RF3_s1/UR3"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.88217e-09, -6.58451, 6.43453)
+transform = Transform3D(1, 0, 0, -1.42109e-14, 1, -2.02535e-14, 1.42109e-14, -1.78435e-14, 1, -4.76837e-07, -6.5845, 6.43453)
 mesh = SubResource("ArrayMesh_nh5f1")
 skeleton = NodePath("")
 
 [node name="Elbow" type="MeshInstance3D" parent="UR3 animated/Yup2Zup/UnityRobotics_RF3_s1/UR3/Shoulder"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00310957, -24.2246, 0.507336)
+transform = Transform3D(0.999999, 0, 0, 0, 0.999999, 0, 0, 0, 1, 0.00309753, -24.2246, 0.507339)
 mesh = SubResource("ArrayMesh_8c804")
 skeleton = NodePath("")
 
@@ -1035,12 +1050,12 @@ mesh = SubResource("ArrayMesh_ann6v")
 skeleton = NodePath("")
 
 [node name="Wrist02" type="MeshInstance3D" parent="UR3 animated/Yup2Zup/UnityRobotics_RF3_s1/UR3/Shoulder/Elbow/Wrist01"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.4682, 4.50711)
+transform = Transform3D(0.790251, 0.612783, 9.92059e-07, -0.612783, 0.790251, -7.30647e-07, -1.2317e-06, -3.05215e-08, 1, 3.05176e-05, -4.46821, 4.50711)
 mesh = SubResource("ArrayMesh_aifow")
 skeleton = NodePath("")
 
 [node name="Wrist03" type="MeshInstance3D" parent="UR3 animated/Yup2Zup/UnityRobotics_RF3_s1/UR3/Shoulder/Elbow/Wrist01/Wrist02"]
-transform = Transform3D(0.994522, 0, 0.104528, 0, 1, 0, -0.104528, 0, 0.994522, 1.90735e-06, -3.7492, 3.85397)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.90735e-06, -3.7492, 3.85397)
 mesh = SubResource("ArrayMesh_rpt30")
 skeleton = NodePath("")
 
@@ -1069,7 +1084,7 @@ libraries = {
 }
 
 [node name="SafetyBoundary1" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.00999992, 0, 0.0161966, 0, 4, 0, -4.04915e-05, 0, 3.99997, 0.920295, 1.02067, 0)
+transform = Transform3D(0.00999992, 0, 0.0161966, 0, 4, 0, -4.04915e-05, 0, 3.99997, -0.0138544, 1.02067, 0)
 mesh = SubResource("BoxMesh_wtmjf")
 
 [node name="SafetyBoundary2" type="MeshInstance3D" parent="."]
@@ -1077,9 +1092,9 @@ transform = Transform3D(0.00999992, 0, 0.0161966, 0, 4, 0, -4.04915e-05, 0, 3.99
 mesh = SubResource("BoxMesh_wtmjf")
 
 [node name="SafetyBoundary3" type="MeshInstance3D" parent="."]
-transform = Transform3D(-4.37114e-10, 0, 4, 0, 4, 0, -0.01, 0, -1.74846e-07, -0.0160661, 1.02924, -0.391948)
+transform = Transform3D(-4.37114e-10, 0, 4, 0, 4, 0, -0.01, 0, -1.74846e-07, -0.482782, 1.02924, -0.391948)
 mesh = SubResource("BoxMesh_wtmjf")
 
 [node name="SafetyBoundary4" type="MeshInstance3D" parent="."]
-transform = Transform3D(1.91069e-17, 1.74846e-07, 4, 0.01, -1.74846e-07, 0, 4.37114e-10, 4, -1.74846e-07, 0.00107387, 1.03448, -0.47975)
+transform = Transform3D(1.91069e-17, 1.74846e-07, 4, 0.01, -1.74846e-07, 0, 4.37114e-10, 4, -1.74846e-07, -0.534499, 1.06827, -0.47975)
 mesh = SubResource("BoxMesh_wtmjf")

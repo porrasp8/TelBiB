@@ -9,8 +9,7 @@ signal player_height_changed(new_height)
 @onready var webxr_primary_button = $WebXR/WebXRVBox/WebXR/WebXRPrimary
 
 func _update():
-	# Input
-	snap_turning_button.button_pressed = XRToolsUserSettings.snap_turning
+	# Input	snap_turning_button.button_pressed = XRToolsUserSettings.snap_turning
 	y_deadzone_slider.value = XRToolsUserSettings.y_axis_dead_zone
 	x_deadzone_slider.value = XRToolsUserSettings.x_axis_dead_zone
 
