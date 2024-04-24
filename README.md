@@ -9,7 +9,8 @@
 * [IP Camera](ip-camera)
 * [VR Environment](#vr-environment)
 * [Helpfull Tools](#helpfull-tools)
-	* [Flex Pendant VNC Remote Control](#flex-pendant-vnc-remote-control) 
+	* [Flex Pendant VNC Remote Control](#flex-pendant-vnc-remote-control)
+*[TFG Index](#tfg-index) 
 
 ### Introduction
 
@@ -277,6 +278,69 @@ Una vez el servicio esta correctamente instalado este se lanzará directamente c
   </p>
    <p align="center"> VNC Flex Pendant View</p>
 </div>
+
+### TFG Index
+
+Indice Para desarrollo del TFG con descripciones generales:
+
+1. Introducción  
+  1.1. La robótica  
+  1.2. Los brazos roboticos y Cobots  
+  1.3. La Teleoperación  
+  1.4. La Realidad Virtual  
+  1.5. La comunicación inalambrica de alta velocidad(5G)   
+  1.6. Sistemas de tiempo real  
+  1.7 Modelado 3D???  
+
+3. Estado del Arte  
+
+4. Objetivos  
+   3.1. Descripción del problema  
+   3.2 Requisitos  
+   3.3 Metodología  
+   3.4 Plan de Trabajo  
+
+5. Plataformas de desarollo, herramientas y tecnologias utilizadas  
+   4.1. Lenguajes de programación  
+     	4.1.1. Python  
+     	4.1.2. C#(.NET)  
+     	4.1.3. GDScript??(Lenguaje de scrpting)  
+     	4.1.4. URScrip??  
+   4.2. Entornos de programacción  
+	4.2.1. Godot Game Engine  
+       	4.2.2. URsim  
+       	4.3.3. RTDE Protocol  
+     	4.4.4  Oculus Developer??  
+     	4.4.5. Godot XR tools  
+     	4.4.6. ...  
+   4.3. Hardware  
+   	4.3.1. Router Tp-Link Archer  
+  	4.3.2. Brazo robotico UR3  
+	4.3.3. Flex Pendant CB3  
+  	4.3.4. Oculus Quest 2  
+   	4.3.5. Robotiq Gripper  
+
+-- Entonro real??  
+
+5. Diseño  
+   5.1 Entorno real(UR3):
+   Hablar de como empece aprendiendo a controlar el UR, me familiaricé con el URscripting, los distintos modos del UR, Y las distintas funciones de movimineto explicando las diferencias existentes entre MoveJ, ServoJ... Y porque finalmente decidi utilizar servoJ. Comentar funcionamineto de servoJ y calculo de trayectorias con las funciones de Ur para conseguir el movimiento final, explicando las necesidades que me planteaba la toma de posicion de las VR.
+   Aunque previamnete explicar el aprendizazje de la comunicacion y creacion de scripts de python para probar esta con moviemientos basicos.
+
+   5.2 Entorno virtual(Godot y VR):
+   Comenzar hablando de libreria de RTDE para  C# y eleccion de Godot como entorno de realidad virtual. Hablando del funcionamiento de toda la comunicación(sockets, tcp/udp), primeros nodos, calculo de posiciones y rotaciones, elementos del entorno y poco a poco intrdocusimos elementos como camara 2D, triangulo de TCP, mesa, limites visuales, modelo 3D, botones...
+
+   5.3. Entorno de comunicación(router y red)  
+
+   
+5. Entorno de comunicación
+   (Explicacion de uso de router y tecnologia de comunicacion de timepo real con RTDE para minimizar latencias y permitir movimiento fluido en teleoperación. Explicacion de pruebas iniciales con cable ethernet adoc y mando logitech. Uso de ServoJ, fucnionamineto y prubeas con el). Comunicacion final, sockets... Admeas de camara y esquema de todo el entorno.)
+
+6. Entorno Virtual
+   (Explicacion de cada uno de los elementos del entono virtual, su conexion con los elementos reales y las diferentes herramientas añadidas para permitir comunicacion y operaciones correctas)
+
+7. Conclusioones
+     
 
 
 
