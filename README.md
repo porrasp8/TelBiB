@@ -199,7 +199,7 @@ In addition to all the elements seen in the [IP Camera](ip-camera) section, the 
 
 
 - Cone-shaped terminal element of the robot. This is designed to correctly configure the rotations between the real TCP and the virtual environment. The rotation of this goes through a process of transformations that allows us to check that the system is working correctly. The rotation of the knob is sent to the robot in “RPY” (Roll Pitch Yaw) format, which is the standard rotation system used by godot, the robot receives these values and transforms them into “Rotation Vector” (format used by UR3) through the function **rpy2rotvec()** of URscript. Then the robot will perform the inverse transformation to try to receive the initial values again and store it in a register so that it can be read by the computer and position the terminal element:
-- 
+  
 <div class="figure">
   <p align="center">
     <img
