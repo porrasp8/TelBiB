@@ -174,9 +174,9 @@ Operation test:
 
 ### VR Environment
 
-Además de todos los elementos vistos en el apartado [IP Camera](ip-camera) el entorno de realidad virtual contiene varios nodos pensandos para ayudar al usuario a llevar a cabo la operación:
+In addition to all the elements seen in the [IP Camera](ip-camera) section, the virtual reality environment contains several nodes designed to help the user to carry out the operation:
 
-- Area de trabajo(fuera de las singularidades del brazo):
+- Work area (outside the arm singularities):
 
 <div class="figure">
   <p align="center">
@@ -188,7 +188,7 @@ Además de todos los elementos vistos en el apartado [IP Camera](ip-camera) el e
 </div>
 
 
-- Modelo 3D del brazo robotico: Conectado con el robot real. Se reciben las posiciones de los "joints" del robot real y se mueve el robot en la simulacion utilizando un godot script. La textura de este se ha configurado con trasparencia para no interferir en la visualización de la camara:
+- 3D model of the robotic arm: Connected to the real robot. The positions of the joints of the real robot are received and the robot is moved in the simulation using a godot script. The texture of this has been configured with transparency to not interfere with the visualization of the camera:
 
 <div class="figure">
   <p align="center">
@@ -200,8 +200,8 @@ Además de todos los elementos vistos en el apartado [IP Camera](ip-camera) el e
 </div>
 
 
-- Elemento terminal del robot en forma de cono. Este esta pensando para configurar correctamentre las rotaciones entre el TCP real y el del entorno virtual. La rotación de este pasa por un proeceso de transformaciones que nos permite comprobar que el sistema este funcionando correctamente. La rotación del mando se envia al robot con formato "RPY"(Roll Pitch Yaw), que es el sistema de rotaciones estandar usado por godot, el robot recibe estos valores y los transforma en "Vector de Rotación"(formato usado por el UR3) a traves de la función **rpy2rotvec()** de URscript. A continuación el robot realizara la transformación inversa para tartar de recibir los valores iniciales de nuevo y lo alamacena en un registro para que pueda ser leido por el ordenador y posicionar el elemento terminal:
-
+- Cone-shaped terminal element of the robot. This is designed to correctly configure the rotations between the real TCP and the virtual environment. The rotation of this goes through a process of transformations that allows us to check that the system is working correctly. The rotation of the knob is sent to the robot in “RPY” (Roll Pitch Yaw) format, which is the standard rotation system used by godot, the robot receives these values and transforms them into “Rotation Vector” (format used by UR3) through the function **rpy2rotvec()** of URscript. Then the robot will perform the inverse transformation to try to receive the initial values again and store it in a register so that it can be read by the computer and position the terminal element:
+- 
 <div class="figure">
   <p align="center">
     <img
@@ -212,7 +212,7 @@ Además de todos los elementos vistos en el apartado [IP Camera](ip-camera) el e
 </div>
 
 
-- Pantalla con imagen de camara IP: Ya mencionado en apartado [IP Camera](ip-camera):
+- Screen with IP camera image: Already mentioned in section [IP Camera](ip-camera):
 
 
 <div class="figure">
@@ -227,7 +227,7 @@ Además de todos los elementos vistos en el apartado [IP Camera](ip-camera) el e
 </div>
 
 
-- Mesa de operaciones: Utilizada para simular la configuración del UR3 de Mesena:
+- Operating table: Used to simulate real UR3 configuration:
 
 <div class="figure">
   <p align="center">
@@ -241,7 +241,7 @@ Además de todos los elementos vistos en el apartado [IP Camera](ip-camera) el e
 </div>
 
 
-- Escena completa:
+- Complete scene:
 
 <div class="figure">
   <p align="center">
@@ -257,18 +257,18 @@ Además de todos los elementos vistos en el apartado [IP Camera](ip-camera) el e
 
 ### Helpfull Tools
 
-Tanto para el desarollo como para el posterior control de operación existen multiples herramientas que resultan de utilidad como por ejemplo el control VNC:
+For the development as well as for the subsequent operation control, there are many useful tools such as VNC control:
 
 #### Flex Pendant VNC Remote Control
 
-El Flex Pendant es un elemento crucial del robot ya que cualquier información, movimiento o configuración que llegue al robot pasa por el. Al estar trabajando con una plataforma que funciona en remoto a traves de la red nos interesa poder por ejemeplo lanzar el programa que se debe ejecutar en el robot a distancia y no necesitar ir hasta el robot para poder realizar esto o poder reiniciar el programa en caso de algun fallo en ejecucción, ademas de realización de cambios en el codigo y en la configuración basica del robot.
+The Flex Pendant is a crucial element of the robot since any information, movement or configuration that reaches the robot goes through it. As we are working with a platform that works remotely through the network we are interested in being able to launch the program to be executed on the robot remotely and not need to go to the robot to do this or to restart the program in case of any failure in execution, in addition to making changes in the code and in the basic configuration of the robot.
 
-Para conseguir esto podemos instalar en el sistema Ubuntu en el que corre el Flex Pendant un servicio que genere un servidor VNC que acepte conexiones remotas en la misma red y permita tanto la visualización de información, como la actuación.
+To achieve this we can install on the Ubuntu system on which the Flex Pendant runs a service that generates a VNC server that accepts remote connections on the same network and allows both the display of information and action.
 
-Para instalar este paquete solo necesitaremos introducir [estos scripts](https://global.discourse-cdn.com/business7/uploads/universal_robots/original/1X/0c55e5facb16de1c931a61138e9608f2b4a4b031.zip) en una unidad USB y conectarlo al Flex Pendant. Esto lanzará un script de instalacion al igual que en el caso de usar "magic files" que nos indicara a traves de un mensaje en verde en la pantalla que la instalación se ha realizado de manera correcta. Para mas información acerca de este herramienta puedes consultar [la siguiente entrada](https://forum.universal-robots.com/t/remote-desktop-to-the-controller-ui/3826/22) en el foro oficial de Universal Robots.
+To install this package we will only need to insert [these scripts](https://global.discourse-cdn.com/business7/uploads/universal_robots/original/1X/0c55e5facb16de1c931a61138e9608f2b4a4b031.zip) in a USB drive and connect it to the Flex Pendant. This will launch an installation script as in the case of using “magic files” that will indicate through a green message on the screen that the installation was successful. For more information about this tool you can consult [the following post](https://forum.universal-robots.com/t/remote-desktop-to-the-controller-ui/3826/22) in the official Universa
 
 
-Una vez el servicio esta correctamente instalado este se lanzará directamente cuando encendamos el robot. Solo necesitaremos itroducir la direccion IP que le hayamos configurado al robot en un visor de VNC y usar la contraseña por defecto "easybot". Una vez hagamos esto tendremos acceso a todas las funcionalidades del FlexPendant en un pantalla como esta:
+Once the service is correctly installed it will be launched directly when we turn on the robot. We only need to enter the IP address we have configured for the robot in a VNC viewer and use the default password “easybot”. Once we do this we will have access to all the FlexPendant functionalities in a screen like this:
 
 <div class="figure">
   <p align="center">
@@ -278,74 +278,3 @@ Una vez el servicio esta correctamente instalado este se lanzará directamente c
   </p>
    <p align="center"> VNC Flex Pendant View</p>
 </div>
-
-### TFG Index
-
-Indice Para desarrollo del TFG con descripciones generales:
-
-1. Introducción  
-  1.1. La robótica  
-  1.2. Los brazos roboticos y Cobots  
-  1.3. La Teleoperación  
-  1.4. La Realidad Virtual  
-  1.5. La comunicación inalambrica de alta velocidad(5G)   
-  1.6. Sistemas de tiempo real  
-  1.7 Modelado 3D???  
-
-3. Estado del Arte  
-
-4. Objetivos  
-   3.1. Descripción del problema  
-   3.2 Requisitos  
-   3.3 Metodología  
-   3.4 Plan de Trabajo  
-
-5. Plataformas de desarollo, herramientas y tecnologias utilizadas  
-   4.1. Lenguajes de programación  
-     	4.1.1. Python  
-     	4.1.2. C#(.NET)  
-     	4.1.3. GDScript??(Lenguaje de scrpting)  
-     	4.1.4. URScrip??  
-   4.2. Entornos de programacción  
-	4.2.1. Godot Game Engine  
-       	4.2.2. URsim  
-       	4.3.3. RTDE Protocol  
-     	4.4.4  Oculus Developer??  
-     	4.4.5. Godot XR tools  
-     	4.4.6. ...  
-   4.3. Hardware  
-   	4.3.1. Router Tp-Link Archer  
-  	4.3.2. Brazo robotico UR3  
-	4.3.3. Flex Pendant CB3  
-  	4.3.4. Oculus Quest 2  
-   	4.3.5. Robotiq Gripper  
-
--- Entonro real??  
-
-5. Diseño  
-   5.1 Entorno real(UR3):
-   Hablar de como empece aprendiendo a controlar el UR, me familiaricé con el URscripting, los distintos modos del UR, Y las distintas funciones de movimineto explicando las diferencias existentes entre MoveJ, ServoJ... Y porque finalmente decidi utilizar servoJ. Comentar funcionamineto de servoJ y calculo de trayectorias con las funciones de Ur para conseguir el movimiento final, explicando las necesidades que me planteaba la toma de posicion de las VR.
-   Aunque previamnete explicar el aprendizazje de la comunicacion y creacion de scripts de python para probar esta con moviemientos basicos.
-
-   5.2 Entorno virtual(Godot y VR):
-   Comenzar hablando de libreria de RTDE para  C# y eleccion de Godot como entorno de realidad virtual. Hablando del funcionamiento de toda la comunicación(sockets, tcp/udp), primeros nodos, calculo de posiciones y rotaciones, elementos del entorno y poco a poco intrdocusimos elementos como camara 2D, triangulo de TCP, mesa, limites visuales, modelo 3D, botones...
-
-   5.3. Entorno de comunicación(router y red)  
-
-   
-5. Entorno de comunicación
-   (Explicacion de uso de router y tecnologia de comunicacion de timepo real con RTDE para minimizar latencias y permitir movimiento fluido en teleoperación. Explicacion de pruebas iniciales con cable ethernet adoc y mando logitech. Uso de ServoJ, fucnionamineto y prubeas con el). Comunicacion final, sockets... Admeas de camara y esquema de todo el entorno.)
-
-6. Entorno Virtual
-   (Explicacion de cada uno de los elementos del entono virtual, su conexion con los elementos reales y las diferentes herramientas añadidas para permitir comunicacion y operaciones correctas)
-
-7. Conclusioones
-     
-
-
-
-
-
-
-
-
