@@ -170,8 +170,6 @@ Operation test:
 </div>
 
 
-///////////////////////////////
-
 ### VR Environment
 
 In addition to all the elements seen in the [IP Camera](ip-camera) section, the virtual reality environment contains several nodes designed to help the user to carry out the operation:
