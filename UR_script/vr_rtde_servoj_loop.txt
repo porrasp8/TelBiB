@@ -1,0 +1,39 @@
+ Program
+   BeforeStart
+     joints≔get_actual_joint_positions()
+     mode≔0
+     gripper≔0
+     last_gripper≔0
+     RPY≔[0,0,0]
+     'MoveJ'
+   Robot Program
+     Loop mode≟1and norm(joints[0]) < 3.14 and norm(joints[1]) < 3.14 and norm(joints[2]) < 3.14 and norm(joints[3]) < 3.14 and norm(joints[4]) < 3.14 and norm(joints[5]) < 3.14
+       servoj(joints,0,0,0.008,0.2,50)
+       If gripper≠last_gripper
+         If gripper>50
+           Gripper Close (1)
+         Else
+           Gripper Open (1)
+         last_gripper≔gripper
+     If mode ≟2 
+       MoveJ
+         home
+     sync()
+   Thread_1
+     tmp≔p[0,0,0,0,0,0]
+     tmp[0]=read_input_float_register(0)
+     tmp[1]=read_input_float_register(1)
+     tmp[2]=read_input_float_register(2)
+     tmp[3]=read_input_float_register(3)
+     tmp[4]=read_input_float_register(4)
+     tmp[5]=read_input_float_register(5)
+     rot=rpy2rotvec([tmp[3],tmp[4],tmp[5]])
+     If get_inverse_kin_has_solution(tmp)
+       joints≔get_inverse_kin(tmp)
+       RPY≔rotvec2rpy([rot[0],rot[1],rot[2]])
+     mode≔read_input_integer_register(25)
+     gripper≔read_input_integer_register(26)
+     write_output_float_register(0,RPY[0])
+     write_output_float_register(1,RPY[1])
+     write_output_float_register(2,RPY[2])
+     sync()
