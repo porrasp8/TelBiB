@@ -1,4 +1,7 @@
-# UR3_VrTeleop
+# TelBiB
+
+![TelBiB (1)](https://github.com/porrasp8/TelBiB/assets/72991722/7f4147a5-a11a-4382-aece-3c98cd750c20)
+
 
 ## Index
 * [Introduction](#introduction)
