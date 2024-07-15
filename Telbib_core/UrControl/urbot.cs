@@ -7,207 +7,45 @@ using System.Threading;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-interface IEncoderDecoder
-{
-	object Decode(ref object o, byte[] buf, ref int offset);
-	void Encode(object o,byte[] buf, ref int offset);
-}
-
-class EncodeValue: IEncoderDecoder // For bool, uint, int, ulong, double
-{
-	Type type;
-	int Typesize;
-
-	public EncodeValue(Type type)
-	{
-		this.type = type;
-		Typesize = Marshal.SizeOf(type);
-	}
-	
-	public void Encode(object o, byte[] buf, ref int offset)
-	{
-
-		byte[] b=null;
-		switch (type.FullName)
-		{
-			case "System.Boolean":
-				b = BitConverter.GetBytes((bool)o);
-				break;
-			case "System.Byte":
-				b = new byte[1];
-				b[0] = (byte)o;
-				break;
-			case "System.UInt32":
-				b = BitConverter.GetBytes((UInt32)o);
-				break;
-			case "System.Int32":
-				b = BitConverter.GetBytes((Int32)o);
-				break;
-			case "System.UInt64":
-				b = BitConverter.GetBytes((UInt64)o);
-				break;
-			case "System.Double":
-				b = BitConverter.GetBytes((Double)o);
-				break;
-		}
-
-		if (BitConverter.IsLittleEndian)
-			Array.Reverse(b);
-		Array.Copy(b, 0, buf, offset, Typesize);
-		offset += Typesize;
-	}
-	
-	public object Decode(ref object o, byte[] buf, ref int offset)
-	{
-
-		// object o not used, value type
-
-		byte[] b = new byte[Typesize];
-		Array.Copy(buf, offset, b, 0, Typesize);
-		if (BitConverter.IsLittleEndian)
-			Array.Reverse(b);
-		offset += Typesize;
-
-		switch (type.FullName)
-		{
-			case "System.Boolean":
-				return BitConverter.ToBoolean(b, 0);
-			case "System.Byte":
-				return b[0];
-			case "System.UInt32":
-				return BitConverter.ToUInt32(b, 0);
-			case "System.Int32":
-				return BitConverter.ToInt32(b, 0);
-			case "System.UInt64":
-				return BitConverter.ToUInt64(b, 0);
-			case "System.Double":
-				return BitConverter.ToDouble(b, 0);
-		}
-
-		return null;             
-	}
-}
-class EncodeArray : IEncoderDecoder // For uint[], int[], ulong[], double[]
-{
-	int ArraySize, Typesize;
-	Type type;
-	public EncodeArray(int size, Type type)
-	{
-		ArraySize = size;
-		Typesize = Marshal.SizeOf(type);
-		this.type = type;
-	}
-	
-	public void Encode(object o, byte[] buf, ref int offset)
-	{
-		Array array = o as Array;
-
-		for (int i = 0; i < ArraySize; i++)
-		{
-			byte[] b=null;
-
-			switch (type.FullName)
-			{
-				case "System.UInt32":
-					b = BitConverter.GetBytes((UInt32)array.GetValue(i));
-					break;
-				case "System.Int32":
-					b = BitConverter.GetBytes((Int32)array.GetValue(i));
-					break;
-				case "System.UInt64":
-					b = BitConverter.GetBytes((UInt64)array.GetValue(i));
-					break;
-				case "System.Double":
-					b = BitConverter.GetBytes((Double)array.GetValue(i));
-					break;
-			}
-			if (BitConverter.IsLittleEndian)
-				Array.Reverse(b);
-			Array.Copy(b, 0, buf, offset, Typesize);
-			offset += Typesize;
-		}
-	}
-	public object Decode(ref object o, byte[] buf, ref int offset)
-	{
-
-		Array obj = o as Array;
-
-		for (int i = 0; i < ArraySize; i++)
-		{
-			byte[] b = new byte[Typesize];
-			Array.Copy(buf, offset, b, 0, Typesize);
-			if (BitConverter.IsLittleEndian)
-				Array.Reverse(b);
-			offset += Typesize;
-
-			object value = null; ;
-
-			switch (type.FullName)
-			{
-				case "System.UInt32":
-					value = BitConverter.ToUInt32(b, 0);
-					break;
-				case "System.Int32":
-					value = BitConverter.ToInt32(b, 0);
-					break;
-				case "System.UInt64":
-					value = BitConverter.ToUInt64(b, 0);
-					break;
-				case "System.Double":
-					value = BitConverter.ToDouble(b, 0);
-					break;
-			}
-
-			obj.SetValue(value,i);
-		}
-
-		return obj; // Not used, type reference
-	}
-}
 
 static class Constants
 {
 	public const string ROBOT_IP = "192.168.0.102"; // Real Robot Wifi(UR3_wifi)
 	//public const string ROBOT_IP = "192.168.56.101"; // URSim
+	public const int RTDE_PORT = 30004;
+	public const int TIMEOUT = 500;
+	public const int ProtocolVersion = 1;
+	public const int DASHBOARD_PORT = 29999;
 	public const int RECIVE_FREQ = 72; // 14 ms(freq of the VR set), take care BLOCKING(See procces monitor)
 	public const double ROTY_OFFSET = -1.57;
-	public const double POSZ_OFFSET = -0.6;
-	
+	public const double POSZ_OFFSET = -0.95;
+	public const double ROTX_OFFSET = 1.57;
+	public const bool DEBUG = false;
 }
 
-/*
+enum RTDE_Command
+	{
+		REQUEST_PROTOCOL_VERSION = 86,
+		GET_URCONTROL_VERSION = 118,
+		TEXT_MESSAGE = 77,
+		DATA_PACKAGE = 85,
+		CONTROL_PACKAGE_SETUP_OUTPUTS = 79,
+		CONTROL_PACKAGE_SETUP_INPUTS = 73,
+		CONTROL_PACKAGE_START = 83,
+		CONTROL_PACKAGE_PAUSE = 80
+	};
 
-See :
-https://www.universal-robots.com/how-tos-and-faqs/how-to/ur-how-tos/real-time-data-exchange-rtde-guide-22229/ 
- 
-BOOL : bool
-UINT8 : byte
-UINT32 : uint
-UINT64 : ulong
-INT32 : int
-DOUBLE : double
-VECTOR3D : double[]
-VECTOR6D : double []
-VECTOR6INT32 : int[]
-VECTOR6UINT32 : uint[]
-  
-TODO and not TODO : do not declare public fields with other types & creates the array with the right size
-
-*/
 [Serializable]
 public class UniversalRobot_Outputs
 {
-	// public double io_current; // check the fields name in the RTDE guide : MUST be the same with the same type
 	public double[] actual_q = new double[6]; // array creation must be done here to give the size
 	public double[] actual_TCP_pose = new double[6]; // Tcp pose
 	public double timestamp;
-	public double output_double_register_0; 
+	public double output_double_register_0; //-- For the RPY rotation(format change inside URscript)
 	public double output_double_register_1; 
 	public double output_double_register_2; 
-	// public int robot_mode;
-	// free private & protected attributs are allows
-	// all properties and methods also (even public)
 }
+
 
 [Serializable]
 public class UniversalRobot_Inputs
@@ -221,76 +59,136 @@ public class UniversalRobot_Inputs
 	public double input_double_register_3; 
 	public double input_double_register_4; 
 	public double input_double_register_5; 
-	public int input_int_register_25; 
+	public int input_int_register_25;
+	public int input_int_register_26; 
 }
+
+/* 
+////////////////////////////////////////////////////////////////////////////////
+UrCommunication Main Node
+////////////////////////////////////////////////////////////////////////////////
+*/
 
 public partial class urbot : Node3D 
 {
+	// Hand, right controller and Ur(Outputs/Inputs) object declaration
 	Node3D hand;
+	XRController3D right_controller;
 	static UniversalRobot_Outputs UrOutputs=new UniversalRobot_Outputs();
 	static UniversalRobot_Inputs UrInputs=new UniversalRobot_Inputs();
+	
+	// Tcp client init
+	TcpClient sock = new TcpClient();
+	ManualResetEvent receiveDone = new ManualResetEvent(false);
+	
+	public String ErrorMessage { get; private set; }
+	public uint ProtocolVersion { get; private set; }
+	
+	byte[] bufRecv = new byte[1500];
+	
+	public event EventHandler OnDataReceive;
+	public event EventHandler OnSockClosed;
+	byte Outputs_Recipe_Id, Inputs_Recipe_Id;
+	
+	object UrStructOuput, UrStructInput;
+	IEncoderDecoder[] UrStructOuputDecoder, UrStructInputDecoder;
+	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		 hand = GetNodeOrNull<Node3D>("/root/Node3D/XROrigin3D/RightHand");
+		// Hand and right controller init to extract positions and buttons status
+		hand = GetNodeOrNull<Node3D>("/root/Node3D/XROrigin3D/RightHand");
+		right_controller = GetNodeOrNull<XRController3D>("/root/Node3D/XROrigin3D/RightHand");
 		
-		// Connection using the protocol version 2 (allows update frequency less or equal to 125 Hz)
-		
+		// Connect to robot(Protocol1 -> 125HZ)
 		OnSockClosed += new EventHandler(Ur3_OnSockClosed);
+		GD.Print("Connected: " + Connect(Constants.ROBOT_IP, Constants.ProtocolVersion));
 
-		GD.Print("Connected: " + Connect(Constants.ROBOT_IP,2));
-
-		// Register Inputs (UR point of view)
+		// Register Inputs (UR point of view)(To send iformation)
 		UrInputs.input_int_register_25 = 1;
 		GD.Print("inputs: " + Setup_Ur_Inputs(UrInputs));
 
-
-		// Register Outputs (UR point of view), for an update frequency 10Hz
+		// Register Outputs (UR point of view)(For visualization and debuggingd)
+		// Update frequency 125Hz
 		GD.Print(Setup_Ur_Outputs(UrOutputs, Constants.RECIVE_FREQ));
 		OnDataReceive += new EventHandler(Ur3_OnDataReceive); 
 
 		// Request the UR to send back Outputs periodically
 		Ur_ControlStart();
 
-
-		// Bye bye Robot
+		// Robot Disconnect
 		//Ur3.Disconnect(); 
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		//GD.Print("pos"+hand.GlobalPosition + " rot " + hand.GlobalRotation);
+		// Scan controller inputs
+		bool buttonA_pressed = (bool)right_controller.GetInput("ax_button");	// Send new pose
+		bool buttonB_pressed = (bool)right_controller.GetInput("by_button");	// Return Home
+		bool trigger_click = (bool)right_controller.GetInput("trigger_click");  // Restart(Dashboard)
+		float grip = (float)right_controller.GetInput("grip") * 100;			// Gripper activation
 		
-		// Robotx mapping(Axis Z in VR)
-		double robot_rotx = hand.GlobalRotation[2];
-		double robot_posx = hand.GlobalPosition[2];
-		//if ( robot_rotx < -0.45) robot_rotx = -0.45;
-		//else if (robot_rotx > 0.45) robot_rotx = 0.45;
+		// Gripper(<50 = close & >50= open) 
+		UrInputs.input_int_register_26 = (int)grip; // % gripper close
 		
-		// Roboty mapping(Axis X in VR)
-		double robot_roty = hand.GlobalRotation[0];
-		double robot_posy = hand.GlobalPosition[0];
-		//if ( robot_posy < -0.37) robot_posy = -0.37;
-		//else if (robot_posy > 0.37) robot_posy = 0.37;
+		// Extract hand position, transform and send to UR
+		if(buttonA_pressed){
+			GD.Print("Controller: Button A pressed -> Sending new pose");	
+			
+			// Robotx mapping(Axis Z in VR)
+			double robot_rotx = hand.GlobalRotation[2];
+			double robot_posx = hand.GlobalPosition[2];
+			
+			// Roboty mapping(Axis X in VR)
+			double robot_roty = hand.GlobalRotation[0];
+			double robot_posy = hand.GlobalPosition[0];
+			
+			// Robotz mapping(Axis Y in VR)
+			double robot_rotz = hand.GlobalRotation[1];
+			double robot_posz = hand.GlobalPosition[1]; 
+			
+			// Add offsets and assign to registers
+			UrInputs.input_double_register_0 = robot_posx;                
+			UrInputs.input_double_register_1 = robot_posy;
+			UrInputs.input_double_register_2 = robot_posz + Constants.POSZ_OFFSET;
+			UrInputs.input_double_register_3 = robot_rotx + Constants.ROTX_OFFSET;
+			UrInputs.input_double_register_4 = robot_roty + Constants.ROTY_OFFSET;
+			UrInputs.input_double_register_5 = robot_rotz;
+			UrInputs.input_int_register_25 = 1; // ServoJ mode			
+		}
+		// Same pose(Not move)
+		else{
+			UrInputs.input_double_register_0 = UrOutputs.actual_TCP_pose[0];                
+			UrInputs.input_double_register_1 = UrOutputs.actual_TCP_pose[1];
+			UrInputs.input_double_register_2 = UrOutputs.actual_TCP_pose[2];
+			UrInputs.input_double_register_3 = UrOutputs.output_double_register_0;
+			UrInputs.input_double_register_4 = UrOutputs.output_double_register_1;
+			UrInputs.input_double_register_5 = UrOutputs.output_double_register_2;
+			
+			if(buttonB_pressed){
+				GD.Print("Controller: Button B pressed -> Home position sended");
+				UrInputs.input_int_register_25 = 2;// MoveJ Mode(go to home)
+			}
+		}
 		
 		
-		// Robotz mapping(Axis Y in VR)
-		double robot_rotz = hand.GlobalRotation[1];
-		double robot_posz = hand.GlobalPosition[1]; 
-		//if ( robot_posz < 0.1) robot_posz = 0.100;
-		//else if (robot_posz> 0.65) robot_posz = 0.65;
-		
-		UrInputs.input_double_register_0 = robot_posx;                
-		UrInputs.input_double_register_1 = robot_posy;
-		UrInputs.input_double_register_2 = robot_posz + Constants.POSZ_OFFSET;
-		UrInputs.input_double_register_3 = robot_rotx;
-		UrInputs.input_double_register_4 = robot_roty + Constants.ROTY_OFFSET;
-		UrInputs.input_double_register_5 = robot_rotz;
+		// Dashboard communication(protective stop unlock and play again)
+		if(trigger_click){
+			GD.Print("Controller: Button B pressed -> Restart security robot settings(Dashboard Communication)");
+			DashboardClient dashboardClient = new DashboardClient(Constants.ROBOT_IP, Constants.DASHBOARD_PORT);
+			dashboardClient.SendString("brake release\n");
+			dashboardClient.SendString("power on\n");
+			dashboardClient.SendString("unlock protective stop\n");
+			dashboardClient.SendString("vr rtde_servoj_loop.urp\n");
+			dashboardClient.SendString("play\n");
+		}
 		
 		// Send data to UR3
-		GD.Print("send inputs:" + Send_Ur_Inputs());
-		 
+		bool send_return = Send_Ur_Inputs();
+		if(Constants.DEBUG){
+			GD.Print("RTDE Communication: Send inputs -> " + send_return);
+		}
 	}
 	
 	// Return the complete pose of the TCP (to be used in gd external scripts)
@@ -298,6 +196,13 @@ public partial class urbot : Node3D
 	{
 		return UrOutputs.actual_TCP_pose;
 	}
+	
+	// Return the complete pose of the TCP (to be used in gd external scripts)
+	 public double[] GetActualJoints()
+	{
+		return UrOutputs.actual_q;
+	}
+	
 	
 	// Return the rotation of TCP in RPY format(need to be implemented in the URscript)
 	 public double[] GetActualRPYRot()
@@ -317,54 +222,24 @@ public partial class urbot : Node3D
 
 	// Recive UR3 data and print it
 	static void Ur3_OnDataReceive(object sender, EventArgs e)
-	{
-		GD.Print("TCP pose recived: x--", UrOutputs.actual_TCP_pose[0],
-				 " y-- ", UrOutputs.actual_TCP_pose[1],
-				 " z-- ", UrOutputs.actual_TCP_pose[2],
-				 " rotx-- ", UrOutputs.actual_TCP_pose[3],
-				 " roty-- ", UrOutputs.actual_TCP_pose[4],
-				 " rotz-- ", UrOutputs.actual_TCP_pose[5]);
+	{	
+		if(Constants.DEBUG){
+			GD.Print("TCP pose recived: x--", UrOutputs.actual_TCP_pose[0],
+					 " y-- ", UrOutputs.actual_TCP_pose[1],
+					 " z-- ", UrOutputs.actual_TCP_pose[2],
+					 " rotx-- ", UrOutputs.actual_TCP_pose[3],
+					 " roty-- ", UrOutputs.actual_TCP_pose[4],
+					 " rotz-- ", UrOutputs.actual_TCP_pose[5]);
+		}
 	}	
-	enum RTDE_Command
-	{
-		REQUEST_PROTOCOL_VERSION = 86,
-		GET_URCONTROL_VERSION = 118,
-		TEXT_MESSAGE = 77,
-		DATA_PACKAGE = 85,
-		CONTROL_PACKAGE_SETUP_OUTPUTS = 79,
-		CONTROL_PACKAGE_SETUP_INPUTS = 73,
-		CONTROL_PACKAGE_START = 83,
-		CONTROL_PACKAGE_PAUSE = 80
-	};
-
-	int TimeOut = 500;
-	TcpClient sock = new TcpClient();
-	ManualResetEvent receiveDone = new ManualResetEvent(false);
-
-	public uint ProtocolVersion { get; private set; }
-
-	byte[] bufRecv = new byte[1500]; // Enough to hold a full OK CONTROL_PACKAGE_SETUP_OUTPUTS response
-
-	public event EventHandler OnDataReceive;
-	public event EventHandler OnSockClosed;
-
-	byte Outputs_Recipe_Id, Inputs_Recipe_Id; // from the Robot point of view
-
-	object UrStructOuput, UrStructInput;
-
-	IEncoderDecoder[] UrStructOuputDecoder, UrStructInputDecoder;
-
-	public String ErrorMessage { get; private set; }
 
 	public bool Connect(String host, uint ProtocolVersion=2, int timeOut = 500)
 	{
 		byte[] InternalbufRecv = new byte[bufRecv.Length];
-		TimeOut = timeOut;
-		this.ProtocolVersion = 1;
 
 		try
 		{
-			sock.Connect(host, 30004);
+			sock.Connect(host, Constants.RTDE_PORT);
 			sock.Client.BeginReceive(InternalbufRecv, 0, InternalbufRecv.Length, SocketFlags.None, AsynchReceive, InternalbufRecv);
 
 			if (ProtocolVersion != 1)
@@ -462,7 +337,7 @@ public partial class urbot : Node3D
 	private bool Send_UR_Command(RTDE_Command Cmd, byte[] payload=null)
 	{
 		SendRtdePacket(Cmd, payload);
-		if (receiveDone.WaitOne(TimeOut))
+		if (receiveDone.WaitOne(Constants.TIMEOUT))
 		{
 			lock (bufRecv)
 			{                    
@@ -584,4 +459,207 @@ public partial class urbot : Node3D
 		this.UrStructInput = UrStruct;
 		return Setup_Ur_InputsOutputs(RTDE_Command.CONTROL_PACKAGE_SETUP_INPUTS, UrStruct, out UrStructInputDecoder);
 	}
+
+	// Dashboard connection
+	public class DashboardClient
+	{
+		private TcpClient client;
+
+		public DashboardClient(string robotIp, int dashboardPort)
+		{
+			client = new TcpClient(robotIp, dashboardPort);
+		}
+
+		public void SendString(string message)
+		{
+			if (client == null || !client.Connected)
+			{
+				Console.WriteLine("Not connected to the Dashboard server.");
+				return;
+			}
+
+			NetworkStream stream = client.GetStream();
+			byte[] data = Encoding.ASCII.GetBytes(message);
+			stream.Write(data, 0, data.Length);
+		}
+
+		public void Disconnect()
+		{
+			if (client != null && client.Connected)
+			{
+				client.Close();
+			}
+		}
+	}
 }
+
+interface IEncoderDecoder
+{
+	object Decode(ref object o, byte[] buf, ref int offset);
+	void Encode(object o,byte[] buf, ref int offset);
+}
+
+class EncodeValue: IEncoderDecoder // For bool, uint, int, ulong, double
+{
+	Type type;
+	int Typesize;
+
+	public EncodeValue(Type type)
+	{
+		this.type = type;
+		Typesize = Marshal.SizeOf(type);
+	}
+	
+	public void Encode(object o, byte[] buf, ref int offset)
+	{
+
+		byte[] b=null;
+		switch (type.FullName)
+		{
+			case "System.Boolean":
+				b = BitConverter.GetBytes((bool)o);
+				break;
+			case "System.Byte":
+				b = new byte[1];
+				b[0] = (byte)o;
+				break;
+			case "System.UInt32":
+				b = BitConverter.GetBytes((UInt32)o);
+				break;
+			case "System.Int32":
+				b = BitConverter.GetBytes((Int32)o);
+				break;
+			case "System.UInt64":
+				b = BitConverter.GetBytes((UInt64)o);
+				break;
+			case "System.Double":
+				b = BitConverter.GetBytes((Double)o);
+				break;
+		}
+
+		if (BitConverter.IsLittleEndian)
+			Array.Reverse(b);
+		Array.Copy(b, 0, buf, offset, Typesize);
+		offset += Typesize;
+	}
+	
+	public object Decode(ref object o, byte[] buf, ref int offset)
+	{
+
+		// object o not used, value type
+
+		byte[] b = new byte[Typesize];
+		Array.Copy(buf, offset, b, 0, Typesize);
+		if (BitConverter.IsLittleEndian)
+			Array.Reverse(b);
+		offset += Typesize;
+
+		switch (type.FullName)
+		{
+			case "System.Boolean":
+				return BitConverter.ToBoolean(b, 0);
+			case "System.Byte":
+				return b[0];
+			case "System.UInt32":
+				return BitConverter.ToUInt32(b, 0);
+			case "System.Int32":
+				return BitConverter.ToInt32(b, 0);
+			case "System.UInt64":
+				return BitConverter.ToUInt64(b, 0);
+			case "System.Double":
+				return BitConverter.ToDouble(b, 0);
+		}
+
+		return null;             
+	}
+}
+
+/* 
+////////////////////////////////////////////////////////////////////////////////
+Encoder and Decoder Class
+////////////////////////////////////////////////////////////////////////////////
+*/
+class EncodeArray : IEncoderDecoder // For uint[], int[], ulong[], double[]
+{
+	int ArraySize, Typesize;
+	Type type;
+	public EncodeArray(int size, Type type)
+	{
+		ArraySize = size;
+		Typesize = Marshal.SizeOf(type);
+		this.type = type;
+	}
+	
+	public void Encode(object o, byte[] buf, ref int offset)
+	{
+		Array array = o as Array;
+
+		for (int i = 0; i < ArraySize; i++)
+		{
+			byte[] b=null;
+
+			switch (type.FullName)
+			{
+				case "System.UInt32":
+					b = BitConverter.GetBytes((UInt32)array.GetValue(i));
+					break;
+				case "System.Int32":
+					b = BitConverter.GetBytes((Int32)array.GetValue(i));
+					break;
+				case "System.UInt64":
+					b = BitConverter.GetBytes((UInt64)array.GetValue(i));
+					break;
+				case "System.Double":
+					b = BitConverter.GetBytes((Double)array.GetValue(i));
+					break;
+			}
+			if (BitConverter.IsLittleEndian)
+				Array.Reverse(b);
+			Array.Copy(b, 0, buf, offset, Typesize);
+			offset += Typesize;
+		}
+	}
+	public object Decode(ref object o, byte[] buf, ref int offset)
+	{
+
+		Array obj = o as Array;
+
+		for (int i = 0; i < ArraySize; i++)
+		{
+			byte[] b = new byte[Typesize];
+			Array.Copy(buf, offset, b, 0, Typesize);
+			if (BitConverter.IsLittleEndian)
+				Array.Reverse(b);
+			offset += Typesize;
+
+			object value = null; ;
+
+			switch (type.FullName)
+			{
+				case "System.UInt32":
+					value = BitConverter.ToUInt32(b, 0);
+					break;
+				case "System.Int32":
+					value = BitConverter.ToInt32(b, 0);
+					break;
+				case "System.UInt64":
+					value = BitConverter.ToUInt64(b, 0);
+					break;
+				case "System.Double":
+					value = BitConverter.ToDouble(b, 0);
+					break;
+			}
+
+			obj.SetValue(value,i);
+		}
+
+		return obj; // Not used, type reference
+	}
+}
+
+
+
+
+
+
+
