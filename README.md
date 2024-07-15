@@ -275,7 +275,7 @@ Once the service is correctly installed it will be launched directly when we tur
   <p align="center">
     <img
       src="https://github.com/porrasp8/UR3_VrTeleop/assets/72991722/624a97c3-c07c-4699-99d1-6812b7299693)"
-      alt="VNC Flex Pendant View" "/>
+      alt="VNC Flex Pendant"/>
   </p>
    <p align="center"> VNC Flex Pendant View</p>
 </div>
