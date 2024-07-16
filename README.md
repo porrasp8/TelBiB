@@ -10,10 +10,9 @@
 * [Newtowk communication](newtowk-communication)
 * [RTDE protocol](real-time-data-exchange(rtde)-protocol)
 * [IP Camera](ip-camera)
-* [VR Environment](#vr-environment)
-* [Helpfull Tools](#helpfull-tools)
-	* [Flex Pendant VNC Remote Control](#flex-pendant-vnc-remote-control)
-*[TFG Index](#tfg-index) 
+* [VR Environment](#vr-environment) 
+* [Helpfull Tools](#helpfull-tools) 
+* [Flex Pendant VNC Remote Control](#flex-pendant-vnc-remote-control) 
 
 ### Introduction
 
